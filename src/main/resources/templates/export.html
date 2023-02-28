@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Экспорт БД</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #DFF0E2;
+        }
+        button {
+            width: 200px;
+            height: 20px;
+            border: none;
+            font-size: 16px;
+            background-color: #2cf5f5;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<button onclick="exportFilm()">Выгрузка файла БД</button>
+<button onclick="location.href='/'">В главное меню</button>
+<table DIR=LTR BORDER>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Длительность</th>
+        <th>Сборы в мире</th>
+        <th>Бюджет</th>
+        <th>Дата выхода</th>
+        <th>Страна</th>
+        <th>Жанр</th>
+        <th>Возрастной лимит</th>
+        <th>Качество</th>
+        <th>Участники</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="film : ${films}">
+        <td th:text="${film.id}"></td>
+        <td th:text="${film.title}"></td>
+        <td th:text="${film.description}"></td>
+        <td th:text="${film.duration}"></td>
+        <td th:text="${film.totalBoxOffice}"></td>
+        <td th:text="${film.budget}"></td>
+        <td th:text="${film.releaseDate}"></td>
+        <td th:text="${film.country.title}"></td>
+        <td th:text="${film.genre.title}"></td>
+        <td th:text="${film.ageLimit.category}"></td>
+        <td th:text="${film.quality.type}"></td>
+        <td>
+            <span th:each="person : ${film.people}" th:text="${person.fullName}+', '" th:if="${!#lists.isEmpty(film.people)}"></span>
+            <span th:if="${#lists.isEmpty(film.people)}">-</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    function exportFilm() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/film' + '/export', true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                const blob = new Blob([this.response], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const contentName = xhr.getResponseHeader('Content-Disposition');
+                const filename = contentName.substring(20);
+                console.log(contentName)
+                console.log(filename);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</html>

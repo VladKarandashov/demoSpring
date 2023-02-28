@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор качества</title>
+  <style>
+    body {
+      background-color: #e3f1e6;
+      font-size: 20px;
+      font-family: 'Pacifico', cursive;
+    }
+    button {
+      width: 150px;
+      height: 25px;
+      border: 1px;
+      font-size: 16px;
+      font-family: 'Pacifico', cursive;
+      background-color: #dcdada;
+      color: black;
+    }
+    option {
+      width: auto;
+      font-size: 15px;
+    }
+    br {
+      color: black;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+<h1>Редактор качества фильмов</h1>
+
+<form th:action="@{/quality/editor}" method="get">
+  <label for="quality">Выберите запись:</label>
+  <select id="quality" name="quality" onchange="this.form.submit()">
+    <option th:value="${quality.id}">Выбрать</option>
+    <option th:each="quality : ${qualities}"
+            th:value="${quality.id}"
+            th:text="${quality.id}+'. '+${quality.type}">
+    </option>
+  </select>
+</form>
+<button onclick="newRecord()">Добавить запись</button>
+<hr>
+
+<div th:if="${quality.id}">
+  <form th:object="${quality}" th:action="@{/quality/update}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>Id: <span th:text="${quality.id}"></span></p>
+    <p><label>
+      Название: <input type="text" th:field="${quality.type}" required="required"/>
+    </label></p>
+    <p></p>
+    <button type="submit">Сохранить</button>
+  </form>
+  <p></p>
+  <form th:object="${quality}" th:action="@{/quality/delete}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <button type="submit">Удалить</button>
+  </form>
+</div>
+<hr>
+<button onclick="location.href='/'">В главное меню</button>
+</body>
+
+<script>
+  function newRecord() {
+    const type = prompt("Введите новое значение:");
+    if (type != null && type !== "") {
+      fetch('/quality/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({type: type})
+      })
+              .then(response => {
+                if (response.ok) {
+                  console.log('Создание успешно');
+                  location.reload();
+                } else {
+                  console.error('Произошла ошибка при создании');
+                  alert('Неправильная запись')
+                }
+              })
+              .catch(error => {
+                console.error('Произошла ошибка при отправке запроса:', error);
+                alert('Произошла ошибка при отправке запроса')
+              });
+    }
+  }
+</script>
+</html>

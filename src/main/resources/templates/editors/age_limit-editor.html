@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор лимитов</title>
+  <style>
+    body {
+      background-color: #e3f1e6;
+      font-size: 20px;
+      font-family: 'Pacifico', cursive;
+    }
+    button {
+      width: 150px;
+      height: 25px;
+      border: 1px;
+      font-size: 16px;
+      font-family: 'Pacifico', cursive;
+      background-color: #dcdada;
+      color: black;
+    }
+    option {
+      width: auto;
+      font-size: 15px;
+    }
+    br {
+      color: black;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+<h1>Редактор возрастных лимитов</h1>
+
+<form th:action="@{/age_limit/editor}" method="get">
+  <label for="age_limit">Выберите запись:</label>
+  <select id="age_limit" name="age_limit" onchange="this.form.submit()">
+    <option th:value="${age_limit.id}">Выбрать</option>
+    <option th:each="age_limit : ${age_limits}"
+            th:value="${age_limit.id}"
+            th:text="${age_limit.id}+'. '+${age_limit.category}">
+    </option>
+  </select>
+</form>
+<button onclick="newRecord()">Добавить запись</button>
+<hr>
+
+<div th:if="${age_limit.id}">
+  <form th:object="${age_limit}" th:action="@{/age_limit/update}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>Id: <span th:text="${age_limit.id}"></span></p>
+    <p><label>
+      Название: <input type="text" th:field="${age_limit.category}" required="required"/>
+    </label></p>
+    <p></p>
+    <button type="submit">Сохранить</button>
+  </form>
+  <p></p>
+  <form th:object="${age_limit}" th:action="@{/age_limit/delete}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <button type="submit">Удалить</button>
+  </form>
+</div>
+<hr>
+<button onclick="location.href='/'">В главное меню</button>
+</body>
+
+<script>
+  function newRecord() {
+    const category = prompt("Введите новое значение:");
+    if (category != null && category !== "") {
+      fetch('/age_limit/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({category: category})
+      })
+              .then(response => {
+                if (response.ok) {
+                  console.log('Создание успешно');
+                  location.reload();
+                } else {
+                  console.error('Произошла ошибка при создании');
+                  alert('Неправильная запись')
+                }
+              })
+              .catch(error => {
+                console.error('Произошла ошибка при отправке запроса:', error);
+                alert('Произошла ошибка при отправке запроса')
+              });
+    }
+  }
+</script>
+</html>

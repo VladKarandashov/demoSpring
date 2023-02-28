@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор фильмов</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<header class="section header">
+    <h1>Редактор фильмов</h1>
+</header>
+<div class="section content">
+    <div class="items smallItems">
+        <div class="form-row">
+            <label for="choose-movie"></label>
+            <input id="choose-movie" name="choose-movie" type="text" list="list-choose-movie" autocomplete="off"
+                   placeholder="Выбрать фильм"/>
+            <datalist id="list-choose-movie">
+            </datalist>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="flash-back"><img src="/images/flash-back.png" width="30" alt="К первому"/></button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="back"><img src="/images/back.png" width="30" alt="Назад"/></button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="save"><img src="/images/save.png" width="30" alt="Сохранить"/></button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="forward"><img src="/images/forward.png" width="30" alt="Вперёд"/></button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="flash-forward"><img src="/images/flash-forward.png" width="30" alt="К последнему"/></button>
+            </div>
+        </div>
+        <hr/>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="new-movie" class="carte">Новый фильм</button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="delete-movie" class="carte">Удалить</button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="menu" class="carte">Меню</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="items">
+        <div class="form-row">
+            <label for="id">id</label>
+            <input id="id" name="id" type="text"/>
+        </div>
+        <div class="form-row">
+            <label for="title">title</label>
+            <input id="title" name="title" type="text"/>
+        </div>
+        <div class="form-row">
+            <label for="description">description</label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        <div class="form-row">
+            <label for="duration">duration</label>
+            <input id="duration" name="duration" type="text"/>
+        </div>
+        <div class="form-row">
+            <label for="box-office">box-office</label>
+            <input id="box-office" name="box-office" type="text"/>
+        </div>
+        <div class="form-row">
+            <label for="budget">budget</label>
+            <input id="budget" name="budget" type="text"/>
+        </div>
+        <div class="form-row">
+            <label for="release-date">release-date</label>
+            <input id="release-date" name="release-date" type="date"/>
+        </div>
+        <div class="form-row">
+            <label for="country">country</label>
+            <input id="country" name="country" type="text" list="list-country" autocomplete="off">
+            <datalist id="list-country">
+                <!-- для примера как работает-->
+                <option value="en"></option>
+                <option value="dt"></option>
+                <option value="rus"></option>
+
+            </datalist>
+            <button id="add-country">+</button>
+        </div>
+        <div class="form-row">
+            <label for="genre">genre</label>
+            <input id="genre" name="genre" type="text" list="list-genre" autocomplete="off">
+            <datalist id="list-genre">
+            </datalist>
+            <button id="add-genre">+</button>
+        </div>
+        <div class="form-row">
+            <label for="age-limit">age limit</label>
+            <input id="age-limit" name="age-limit" type="text" list="list-age-limit" autocomplete="off">
+            <datalist id="list-age-limit">
+            </datalist>
+            <button id="add-age-limit">+</button>
+        </div>
+        <div class="form-row">
+            <label for="persons">quality</label>
+            <input id="persons" name="persons" type="text" list="list-persons" autocomplete="off">
+            <datalist id="list-persons">
+            </datalist>
+            <button id="add-persons">+</button>
+        </div>
+
+
+        <!-- Поле с persons-->
+
+        <div class="multipleSelect">
+            <!-- Список с выбором опций -->
+            <div class="form-row">
+                <label for="selectOptions">persons</label>
+                <select size="1" id="selectOptions"></select>
+            </div>
+            <!-- Поле для добавления новой опции -->
+            <div class="form-row">
+                <label for="newOption">add new persons:</label>
+                <input type="text" id="newOption" name="newOption">
+                <!-- Кнопка для добавления новой опции -->
+                <button type="button" onclick="addOption()">+</button>
+                <!-- Список выбранных опций -->
+            </div>
+            <!-- Выведенные строки выбранных опций -->
+            <div class="form-row">
+                <ul id="selectedOptions"></ul>
+            </div>
+            <script>
+                // Массив для хранения всех опций
+                const options = [];
+                // Элемент селекта
+                const selectElement = document.getElementById('selectOptions');
+                // Поле для ввода новой опции
+                const newOptionInput = document.getElementById('newOption');
+                // Элемент списка выбранных опций
+                const selectedOptionsElement = document.getElementById('selectedOptions');
+                // Массив выбранных опций
+                const selectedOptions = [];
+
+                // Добавляем существующие опции в селект
+                options.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option;
+                    optionElement.text = option;
+                    selectElement.add(optionElement);
+                });
+
+                // Добавляем новую опцию
+                function addOption() {
+                    const newOption = newOptionInput.value.trim();
+                    if (newOption !== '') {
+                        options.push(newOption);
+                        const optionElement = document.createElement('option');
+                        optionElement.value = newOption;
+                        optionElement.text = newOption;
+                        selectElement.add(optionElement);
+                        newOptionInput.value = '';
+                    }
+                }
+
+                // Добавляем выбранную опцию
+                function addSelectedOption() {
+                    const selectedOptionsList = document.createElement('li');
+                    const selectedOption = selectElement.value;
+                    if (selectedOption && !selectedOptions.includes(selectedOption)) {
+                        selectedOptions.push(selectedOption);
+                        selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
+                        selectedOptionsElement.appendChild(selectedOptionsList);
+                    }
+                }
+
+                // Удаляем выбранную опцию
+                function removeSelectedOption(selectedOption) {
+                    const optionIndex = selectedOptions.indexOf(selectedOption);
+                    if (optionIndex > -1) {
+                        selectedOptions.splice(optionIndex, 1);
+                        const selectedOptionList = selectedOptionsElement.querySelectorAll('li');
+                        selectedOptionList[optionIndex].remove();
+                    }
+                }
+
+                // Обновляем событие изменения выбора опции
+                selectElement.addEventListener('change', () => {
+                    addSelectedOption();
+                });
+            </script>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

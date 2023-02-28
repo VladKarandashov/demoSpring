@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+    <style>
+        body {
+            background-color: #e3f1e6;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+        }
+
+        button {
+            width: 150px;
+            height: 25px;
+            border: 1px;
+            font-size: 16px;
+            font-family: 'Pacifico', cursive;
+            background-color: #dcdada;
+            color: black;
+        }
+
+        option {
+            width: auto;
+            font-size: 15px;
+        }
+
+        br {
+            color: black;
+            background: black;
+        }
+
+        table {
+            text-align: center;
+        }
+
+        canvas {
+            width: 200px;
+            height: 200px;
+        }
+
+    </style>
+    <script>
+        function drawTable(movies) {
+            let textHTML = "";
+            textHTML += "<table DIR=LTR BORDER><thead><tr>"
+            textHTML += "<th>Жанр</th>"
+            textHTML += "<th>Количество</th>"
+            textHTML += "</tr></thead><tbody>"
+
+            for (let movie of movies) {
+                textHTML += "<tr>"
+                textHTML += "<td>"+movie.genre.title+"</td>"
+                textHTML += "<td>"+movie.count+"</td>"
+                textHTML += "</tr>"
+            }
+            textHTML += "</tbody></table>"
+            return textHTML;
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function drawDiagram(movies) {
+            // Получение данных из таблицы
+            const labels = [];
+            const data = [];
+            for (let movie of movies) {
+                labels.push(movie.genre.title);
+                data.push(movie.count);
+            }
+
+            // Создание круговой диаграммы
+            const ctx = document.createElement('canvas').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#f17f97',
+                            '#1b7ec7',
+                            '#FFCE56',
+                            '#00C851',
+                            '#76cae8',
+                            '#e53935',
+                            '#1b691d',
+                            '#fb8c00',
+                            '#8e24aa',
+                            '#6d4c41'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    legend: {
+                        position: 'right'
+                    },
+                    responsive: false
+                }
+            });
+
+            // Добавление диаграммы на страницу
+            return ctx.canvas;
+        }
+    </script>
+    <script>
+        const listStr = "[[${countArray}]]";
+        const dataJson = listStr.replaceAll("&quot;", "\"");
+        console.log(dataJson)
+        const data = JSON.parse(dataJson);
+
+        // Класс Genre
+        class Genre {
+            constructor(id, title) {
+                this.id = id;
+                this.title = title;
+            }
+        }
+
+        // Класс Movie
+        class Movie {
+            constructor(genre, count) {
+                this.genre = new Genre(genre.id, genre.title);
+                this.count = count;
+            }
+        }
+
+        const movies = [];
+        for (let item of data) {
+            const movie = new Movie(item.genre, item.count);
+            movies.push(movie);
+        }
+        console.log(movies)
+    </script>
+</head>
+<body>
+<h1>Статистика</h1>
+<br>
+<label>Всего фильмов:</label>
+<span th:text="${total}"></span>
+
+<form th:action="@{/statistic}" method="get">
+    <label for="country">Выберите страну:</label>
+    <select id="country" name="country" onchange="this.form.submit()">
+        <option th:value="-1">Выберите:</option>
+        <option th:value="0">Все</option>
+        <option th:each="country : ${countries}"
+                th:value="${country.id}"
+                th:text="${country.id}+'. '+${country.title}">
+        </option>
+    </select>
+</form>
+<br>
+<b><span th:text="${title}"></span></b>
+<br>
+<table>
+    <tr>
+        <td id="table-cell"></td>
+        <td id="diagram-cell"></td>
+    </tr>
+</table>
+<br>
+<button onclick="location.href='/'">В главное меню</button>
+</body>
+<script>
+    // Получаем ссылки на ячейки таблицы
+    const tableCell = document.getElementById("table-cell");
+    const diagramCell = document.getElementById("diagram-cell");
+
+    // Вставляем результаты функций в соответствующие ячейки таблицы
+    tableCell.innerHTML = drawTable(movies);
+    diagramCell.appendChild(drawDiagram(movies));
+</script>
+</html>

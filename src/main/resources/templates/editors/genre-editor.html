@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактор жанров</title>
+    <style>
+        body {
+            background-color: #e3f1e6;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+        }
+        button {
+            width: 150px;
+            height: 25px;
+            border: 1px;
+            font-size: 16px;
+            font-family: 'Pacifico', cursive;
+            background-color: #dcdada;
+            color: black;
+        }
+        option {
+            width: auto;
+            font-size: 15px;
+        }
+        br {
+            color: black;
+            background: black;
+        }
+    </style>
+</head>
+<body>
+<h1>Редактор жанров</h1>
+
+<form th:action="@{/genre/editor}" method="get">
+    <label for="genre">Выберите запись:</label>
+    <select id="genre" name="genre" onchange="this.form.submit()">
+        <option th:value="${genre.id}">Выбрать</option>
+        <option th:each="genre : ${genres}"
+                th:value="${genre.id}"
+                th:text="${genre.id}+'. '+${genre.title}">
+        </option>
+    </select>
+</form>
+<button onclick="newRecord()">Добавить запись</button>
+<hr>
+
+<div th:if="${genre.id}">
+    <form th:object="${genre}" th:action="@{/genre/update}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <p>Id: <span th:text="${genre.id}"></span></p>
+        <p><label>
+            Название: <input type="text" th:field="${genre.title}" required="required"/>
+        </label></p>
+        <p></p>
+        <button type="submit">Сохранить</button>
+    </form>
+    <p></p>
+    <form th:object="${genre}" th:action="@{/genre/delete}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <button type="submit">Удалить</button>
+    </form>
+</div>
+<hr>
+<button onclick="location.href='/'">В главное меню</button>
+</body>
+
+<script>
+    function newRecord() {
+        const title = prompt("Введите новое значение:");
+        if (title != null && title !== "") {
+            fetch('/genre/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({title: title})
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Создание успешно');
+                        location.reload();
+                    } else {
+                        console.error('Произошла ошибка при создании');
+                        alert('Неправильная запись')
+                    }
+                })
+                .catch(error => {
+                    console.error('Произошла ошибка при отправке запроса:', error);
+                    alert('Произошла ошибка при отправке запроса')
+                });
+        }
+    }
+</script>
+</html>

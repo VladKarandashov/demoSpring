@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор персон</title>
+  <style>
+    body {
+      background-color: #e3f1e6;
+      font-size: 20px;
+      font-family: 'Pacifico', cursive;
+    }
+    button {
+      width: 150px;
+      height: 25px;
+      border: 1px;
+      font-size: 16px;
+      font-family: 'Pacifico', cursive;
+      background-color: #dcdada;
+      color: black;
+    }
+    option {
+      width: auto;
+      font-size: 15px;
+    }
+    br {
+      color: black;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+<h1>Редактор персон</h1>
+
+<form th:action="@{/person/editor}" method="get">
+  <label for="person">Выберите запись:</label>
+  <select id="person" name="person" onchange="this.form.submit()">
+    <option th:value="${person.id}">Выбрать</option>
+    <option th:each="person : ${persons}"
+            th:value="${person.id}"
+            th:text="${person.id}+'. '+${person.fullName}">
+    </option>
+  </select>
+</form>
+<button onclick="newRecord()">Добавить запись</button>
+<hr>
+
+<div th:if="${person.id}">
+  <form th:object="${person}" th:action="@{/person/update}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>Id: <span th:text="${person.id}"></span></p>
+    <p><label>
+      Полное имя: <input type="text" th:field="${person.fullName}" required="required"/>
+    </label></p>
+    <p><label>
+      Дата рождения: <input type="date" th:field="${person.birthday}"/>
+    </label></p>
+    <p><label>
+      Профессия: <input type="text" th:field="${person.profession}"/>
+    </label></p>
+    <p></p>
+    <button type="submit">Сохранить</button>
+  </form>
+  <p></p>
+  <form th:object="${person}" th:action="@{/person/delete}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <button type="submit">Удалить</button>
+  </form>
+</div>
+<hr>
+<button onclick="location.href='/'">В главное меню</button>
+</body>
+
+<script>
+  function newRecord() {
+    const fullName = prompt("Введите новое значение:");
+    if (fullName != null && fullName !== "") {
+      fetch('/person/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({fullName: fullName})
+      })
+              .then(response => {
+                if (response.ok) {
+                  console.log('Создание успешно');
+                  location.reload();
+                } else {
+                  console.error('Произошла ошибка при создании');
+                  alert('Неправильная запись')
+                }
+              })
+              .catch(error => {
+                console.error('Произошла ошибка при отправке запроса:', error);
+                alert('Произошла ошибка при отправке запроса')
+              });
+    }
+  }
+</script>
+</html>

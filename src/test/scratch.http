@@ -1,0 +1,20 @@
+### Тестовый вызов
+GET http://localhost:8080/testing/test
+
+### Проверка кнопки Помощь
+GET http://localhost:8080/help
+
+### получить все фильмы
+GET http://localhost:8080/film
+
+### получить фильм по id
+GET http://localhost:8080/film/1
+
+### проверяем search
+GET http://localhost:8080/search/items
+
+### ищем фильмы
+GET http://localhost:8080/film/search?country=2&genre=5
+
+### проверка статистики
+GET http://localhost:8080/statistic

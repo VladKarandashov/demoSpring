@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Помощь</title>
+    <style>
+        body {
+            text-align: center;
+            font-size: 20px;
+            background-color: #DFF0E2;
+        }
+        button {
+            width: 100px;
+            height: 40px;
+            border: none;
+            font-size: 16px;
+            background-color: #2cf5f5;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Помощь по базе данных "Фильмы"</h1>
+<hr>
+
+<p>
+    Данная БД была создана для хранения/редактирования информации о фильмах, <br>
+    а также получить возможность быстрого поиска картин по определённым параметрам.
+</p>
+
+<p>
+    Использовалась информация, представленная в открытом в виде, на сайте КиноПоиск
+</p>
+
+<p>
+    Работу выполнил студент группы ИВТ-Б20 - Карандашов Владислав
+</p>
+
+<hr>
+<br>
+<button onclick="location.href='/'">В главное меню</button>
+<hr>
+<br>
+<script>
+    document.write("Строка запроса: " + location.href + "<br />");
+    document.write("Путь к ресурсу: " + location.pathname + "<br />");
+    document.write("Схема: " + location.origin + "<br />");
+    document.write("Протокол: " + location.protocol + "<br />");
+    document.write("Порт: " + location.port + "<br />");
+    document.write("Хост: " + location.host + "<br />");
+    document.write("Имя хоста: " + location.hostname + "<br />");
+    document.write("Хэш: " + location.hash + "<br />");
+    document.write("Поиск: " + location.search + "<br />");
+</script>
+</body>
+</html>
