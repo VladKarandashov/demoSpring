@@ -65,7 +65,12 @@ public class FilmController {
 
         log.debug("Получение фильма основного:");
         Film film;
-        if (id==0) film = new Film();
+        if (id==0) film = Film.builder()
+                .country(new Country())
+                .genre(new Genre())
+                .ageLimit(new AgeLimit())
+                .quality(new Quality())
+                .build();
         else film = filmRepository.findById(id).orElseThrow();
         model.addAttribute("film", film);
 

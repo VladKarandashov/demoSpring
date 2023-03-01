@@ -8,207 +8,180 @@
     <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
-    <header class="section header">
-        <h1>Редактор фильмов</h1>
-    </header>
-    <div class="section content">
-        <div class="items smallItems">
-            <div class="form-row">
-                <label for="chooseMovie"></label>
-                <select size="1" id="chooseMovie" name="chooseMovie"></select>
-        
-                <script>
-                    const chooseMovieOptions = ['вяз 1', 'вяз2 ', 'вяз бесконечность'];
+<header class="section header">
+    <h1>Редактор фильмов</h1>
+</header>
+<div class="section content">
+    <div class="items smallItems">
+        <div class="form-row">
+            <label for="chooseMovie"></label>
+            <select size="1" id="chooseMovie" name="chooseMovie"></select>
 
-                    const chooseMovieSelectElement = document.getElementById('chooseMovie');
+            <script>
+                const chooseMovieOptions = ['вяз 1', 'вяз2 ', 'вяз бесконечность'];
 
-                    chooseMovieOptions.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = option;
-                        optionElement.text = option;
-                        chooseMovieSelectElement.add(optionElement);
-                     });
+                const chooseMovieSelectElement = document.getElementById('chooseMovie');
 
-                </script>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="flash-back"><img src="/images/flash-back.png" width="30" alt=""/></button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-
-                    <button id="back"><img src="/images/back.png" width="30" alt=""/></button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="save"><img src="/images/save.png" width="30" alt=""/></button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="forward"><img src="/images/forward.png" width="30" alt=""/></button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="flash-forward"><img src="/images/flash-forward.png" width="30" alt=""/></button>
-                </div>
-            </div>
-            <hr/>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="new-movie" class="carte">Новый фильм</button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="delete-movie" class="carte">Удалить</button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="button-wrapper">
-                    <button id="menu" class="carte">Меню</button>
-                </div>
+                chooseMovieOptions.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option;
+                    optionElement.text = option;
+                    chooseMovieSelectElement.add(optionElement);
+                });
+            </script>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <a th:href="@{/film/editor/{id}(id=${firstId})}">
+                    <button id="flash-back">
+                        <img src="/images/flash-back.png" width="30" alt="к первому"/>
+                    </button>
+                </a>
             </div>
         </div>
-
-        <div class="items">
-            <div class="form-row">
-                <label for="movieID">id</label>
-                <p id="movieId"></p>
-                <script>
-                    var movieIdVariable = '13'; //id подхваченный из бд
-                    document.getElementById("movieId").innerHTML = movieIdVariable;
-                </script>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <a th:href="@{/film/editor/{id}(id=${prevId})}">
+                    <button id="back">
+                        <img src="/images/back.png" width="30" alt="предыдущий"/>
+                    </button>
+                </a>
             </div>
-            <div class="form-row">
-                <label for="title">title</label>
-                <input id="title" name="title" type="text"/>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="save"><img src="/images/save.png" width="30" alt="сохранить"/></button>
             </div>
-            <div class="form-row">
-                <label for="description">description</label>
-                <textarea id="description" name="description"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <a th:href="@{/film/editor/{id}(id=${nextId})}">
+                    <button id="forward"><img src="/images/forward.png" width="30" alt="следующий"/></button>
+                </a>
             </div>
-            <div class="form-row">
-                <label for="duration">duration</label>
-                <input id="duration" name="duration" type="text"/>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <a th:href="@{/film/editor/{id}(id=${lastId})}">
+                    <button id="flash-forward"><img src="/images/flash-forward.png" width="30" alt="к последнему"/>
+                    </button>
+                </a>
             </div>
-            <div class="form-row">
-                <label for="box-office">box-office</label>
-                <input id="box-office" name="box-office" type="text"/>
+        </div>
+        <hr/>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <a th:href="@{/film/editor/{id}(id=0)}">
+                    <button id="new-movie" class="carte">Новый фильм</button>
+                </a>
             </div>
-            <div class="form-row">
-                <label for="budget">budget</label>
-                <input id="budget" name="budget" type="text"/>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="delete-movie" class="carte">Удалить</button>
             </div>
-            <div class="form-row">
-                <label for="release-date">release-date</label>
-                <input id="release-date" name="release-date" type="date"/>
+        </div>
+        <div class="form-row">
+            <div class="button-wrapper">
+                <button id="menu" class="carte" onclick="location.href='/'">Меню</button>
             </div>
+        </div>
+    </div>
+
+    <div class="items">
+        <div class="form-row">
+            <label for="movieID">id</label>
+            <p id="movieId"><span th:text="${film.id}"></span></p>
+        </div>
+        <div class="form-row">
+            <label for="title">title</label>
+            <input id="title" name="title" type="text" th:field="${film.title}"/>
+        </div>
+        <div class="form-row">
+            <label for="description">description</label>
+            <textarea id="description" name="description" th:field="${film.description}"></textarea>
+        </div>
+        <div class="form-row">
+            <label for="duration">duration</label>
+            <input id="duration" name="duration" type="number" th:field="${film.duration}"/>
+        </div>
+        <div class="form-row">
+            <label for="box-office">box-office</label>
+            <input id="box-office" name="box-office" type="number" th:field="${film.totalBoxOffice}"/>
+        </div>
+        <div class="form-row">
+            <label for="budget">budget</label>
+            <input id="budget" name="budget" type="number" th:field="${film.budget}"/>
+        </div>
+        <div class="form-row">
+            <label for="release-date">release-date</label>
+            <input id="release-date" name="release-date" type="date" th:field="${film.releaseDate}"/>
+        </div>
+        <div class="form-row">
+            <label for="country">country</label>
+            <select size="1" id="country" name="country">
+                <option th:value="0">Выбрать</option>
+                <option th:each="country : ${countries}"
+                        th:value="${country.id}"
+                        th:selected="${country.id == film.country.id}"
+                        th:text="${country.id}+'. '+${country.title}">
+                </option>
+            </select>
+            <button type="button" onclick="addOption()">+</button>
+        </div>
+        <div class="form-row">
+            <label for="genre">genre</label>
+            <select size="1" id="genre" name="genre">
+                <option th:value="0">Выбрать</option>
+                <option th:each="genre : ${genres}"
+                        th:value="${genre.id}"
+                        th:selected="${genre.id == film.genre.id}"
+                        th:text="${genre.id}+'. '+${genre.title}">
+                </option>
+            </select>
+            <button type="button" onclick="addOption()">+</button>
+        </div>
+        <div class="form-row">
+            <label for="ageLimit">age limit</label>
+            <select size="1" id="ageLimit" name="ageLimit">
+                <option th:value="0">Выбрать</option>
+                <option th:each="ageLimit : ${age_limits}"
+                        th:value="${ageLimit.id}"
+                        th:selected="${ageLimit.id == film.ageLimit.id}"
+                        th:text="${ageLimit.id}+'. '+${ageLimit.category}">
+                </option>
+            </select>
+            <button type="button" onclick="addOption()">+</button>
+        </div>
+        <div class="form-row">
+            <label for="quality">quality</label>
+            <select size="1" id="quality" name="quality">
+                <option th:value="0">Выбрать</option>
+                <option th:each="quality : ${qualities}"
+                        th:value="${quality.id}"
+                        th:selected="${quality.id == film.quality.id}"
+                        th:text="${quality.id}+'. '+${quality.type}">
+                </option>
+            </select>
+            <button type="button" onclick="addOption()">+</button>
+        </div>
 
 
+        <!-- Поле с persons-->
+
+        <div class="multipleSelect">
+            <!-- Список с выбором опций -->
             <div class="form-row">
-                <label for="country">country</label>
-                <select size="1" id="country" name="country"></select>
-                <button type="button" onclick="addOption()">+</button> 
-
-                <script>
-                    const countryOptions = ['russia', 'germany', 'usa'];
-
-                    const countrySelectElement = document.getElementById('country');
-
-                    countryOptions.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = option;
-                        optionElement.text = option;
-                        countrySelectElement.add(optionElement);
-                     });
-
-                </script>
+                <label for="selectOptions">persons</label>
+                <select size="1" id="selectOptions"></select>
+                <!-- Кнопка для добавления новой опции, сюда подвязываешь свой prompt для функции addOption -->
+                <button type="button" onclick="addOption()">+</button>
             </div>
-
-
+            <!-- Выведенные строки выбранных опций -->
             <div class="form-row">
-                <label for="genre">genre</label>
-                <select size="1" id="genre" name="genre"></select>
-                <button type="button" onclick="addOption()">+</button> 
-
-                <script>
-                    const genreOptions = ['гачи1', 'гачи2', 'гачи300'];
-
-                    const genreSelectElement = document.getElementById('genre');
-
-                    genreOptions.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = option;
-                        optionElement.text = option;
-                        genreSelectElement.add(optionElement);
-                     });
-
-                </script>
+                <ul id="selectedOptions"></ul>
             </div>
-
-
-            <div class="form-row">
-                <label for="ageLimit">age limit</label>
-                <select size="1" id="ageLimit" name="ageLimit"></select>
-                <button type="button" onclick="addOption()">+</button> 
-
-                <script>
-                    const ageLimitOptions = ['12+', '16+', '18+'];
-
-                    const ageLimitSelectElement = document.getElementById('ageLimit');
-
-                    ageLimitOptions.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = option;
-                        optionElement.text = option;
-                        ageLimitSelectElement.add(optionElement);
-                     });
-
-                </script>
-            </div>
-
-            
-            <div class="form-row">
-                <label for="quality">quality</label>
-                <select size="1" id="quality" name="quality"></select>
-                <button type="button" onclick="addOption()">+</button> 
-
-                <script>
-                    const qualityOptions = ['низкое', 'номально', 'как в жизни'];
-
-                    const qualitySelectElement = document.getElementById('quality');
-
-                    qualityOptions.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = option;
-                        optionElement.text = option;
-                        qualitySelectElement.add(optionElement);
-                     });
-
-                </script>
-            </div>
-
-
-            <!-- Поле с persons-->
-
-            <div class="multipleSelect">
-                <!-- Список с выбором опций -->
-                <div class="form-row">
-                    <label for="selectOptions">persons</label>
-                    <select size="1" id="selectOptions"></select>
-                    <!-- Кнопка для добавления новой опции, сюда подвязываешь свой prompt для функции addOption -->
-                    <button type="button" onclick="addOption()">+</button> 
-                </div>
-                <!-- Выведенные строки выбранных опций -->
-                <div class="form-row">
-                    <ul id="selectedOptions"></ul>
-                </div>
-                <script>
+            <script>
                 // Массив для хранения всех опций
                 const options = ['option1', 'option2', 'option3'];  // Тут указан типовой пример содержимого
                 // Элемент селекта
@@ -231,9 +204,9 @@
                     const selectedOptionsList = document.createElement('li');
                     const selectedOption = selectElement.value;
                     if (selectedOption && !selectedOptions.includes(selectedOption)) {
-                    selectedOptions.push(selectedOption);
-                    selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
-                    selectedOptionsElement.appendChild(selectedOptionsList);
+                        selectedOptions.push(selectedOption);
+                        selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
+                        selectedOptionsElement.appendChild(selectedOptionsList);
                     }
                 }
 
@@ -241,9 +214,9 @@
                 function removeSelectedOption(selectedOption) {
                     const optionIndex = selectedOptions.indexOf(selectedOption);
                     if (optionIndex > -1) {
-                    selectedOptions.splice(optionIndex, 1);
-                    const selectedOptionList = selectedOptionsElement.querySelectorAll('li');
-                    selectedOptionList[optionIndex].remove();
+                        selectedOptions.splice(optionIndex, 1);
+                        const selectedOptionList = selectedOptionsElement.querySelectorAll('li');
+                        selectedOptionList[optionIndex].remove();
                     }
                 }
 
@@ -251,11 +224,11 @@
                 selectElement.addEventListener('change', () => {
                     addSelectedOption();
                 });
-                </script>
-                  
-            </div>
+            </script>
+
         </div>
     </div>
+</div>
 </body>
 </html>
 
