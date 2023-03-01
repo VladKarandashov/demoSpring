@@ -29,23 +29,23 @@ public class FilmController {
 
     @GetMapping("/editor")
     public String showEditorForm() {
-        Film firstFilm = filmRepository.findTopBy();
-        return "redirect:/film/editor/" +  firstFilm.getId();
+        Long firstFilmId = filmRepository.findFirstRowId();
+        return "redirect:/film/editor/" +  firstFilmId;
     }
 
     @GetMapping("/editor/{id}")
     public String showEditorFormById(@PathVariable Long id, Model model) {
-        Film firstFilm = filmRepository.findTopBy();
-        Film lastFilm = filmRepository.findTopByOrderByIdDesc();
-        if (id != 0 && !filmRepository.existsById(id)) return  "redirect:/film/editor/" +  firstFilm.getId();
+        Long firstFilmId = filmRepository.findFirstRowId();
+        Long lastFilmId = filmRepository.findLastRowId();
+        if (id != 0 && !filmRepository.existsById(id)) return  "redirect:/film/editor/" +  firstFilmId;
 
-        model.addAttribute("firstId", firstFilm.getId());
-        model.addAttribute("lastId", lastFilm.getId());
+        model.addAttribute("firstId", firstFilmId);
+        model.addAttribute("lastId", lastFilmId);
 
         Long prevId = filmRepository.getPreviousId(id);
         Long nextId = filmRepository.getNextId(id);
-        prevId = prevId==null ? lastFilm.getId() : prevId;
-        nextId = nextId==null ? firstFilm.getId() : nextId;
+        prevId = prevId==null ? lastFilmId : prevId;
+        nextId = nextId==null ? firstFilmId : nextId;
         model.addAttribute("prevId", prevId);
         model.addAttribute("nextId", nextId);
 
@@ -63,6 +63,7 @@ public class FilmController {
         model.addAttribute("qualities", qualities);
         model.addAttribute("persons", persons);
 
+        log.debug("Получение фильма основного:");
         Film film;
         if (id==0) film = new Film();
         else film = filmRepository.findById(id).orElseThrow();

@@ -15,9 +15,10 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
     Stream<Film> streamAllBy();
     List<ItemFilm> findAllBy();
 
-    Film findTopBy();
-
-    Film findTopByOrderByIdDesc();
+    @Query("SELECT id FROM Film ORDER BY id ASC  LIMIT 1")
+    Long findFirstRowId();
+    @Query("SELECT id FROM Film ORDER BY id DESC LIMIT 1")
+    Long findLastRowId();
 
     @Query("SELECT f.genre as genre, COUNT(*) as count FROM Film f GROUP BY f.genre")
     List<GenreCount> countFilmsGenre();
