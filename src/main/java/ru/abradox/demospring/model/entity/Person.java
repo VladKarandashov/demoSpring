@@ -33,4 +33,9 @@ public class Person {
     public Person(String fullName) {
         this.fullName = fullName;
     }
+
+    @Override
+    public String toString() {
+        return "\""+fullName+"\"";
+    }
 }

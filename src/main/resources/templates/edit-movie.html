@@ -173,7 +173,13 @@
             <!-- Список с выбором опций -->
             <div class="form-row">
                 <label for="selectOptions">persons</label>
-                <select size="1" id="selectOptions"></select>
+                <select size="1" id="selectOptions" onchange="addSelectedOption()">
+                    <option th:value="0">Выбрать</option>
+                    <option th:each="person : ${persons}"
+                            th:value="${person.fullName}"
+                            th:text="${person.id}+'. '+${person.fullName}">
+                    </option>
+                </select>
                 <!-- Кнопка для добавления новой опции, сюда подвязываешь свой prompt для функции addOption -->
                 <button type="button" onclick="addOption()">+</button>
             </div>
@@ -182,8 +188,11 @@
                 <ul id="selectedOptions"></ul>
             </div>
             <script>
+                const listStr = "[[${personsByFilm}]]";
+                const dataJson = "{\"persons\": "+listStr.replaceAll("&quot;", "\"")+"}";
+
                 // Массив для хранения всех опций
-                const options = ['option1', 'option2', 'option3'];  // Тут указан типовой пример содержимого
+                const options = extractNamesFromJson(dataJson);
                 // Элемент селекта
                 const selectElement = document.getElementById('selectOptions');
                 // Элемент списка выбранных опций
@@ -191,23 +200,27 @@
                 // Массив выбранных опций
                 const selectedOptions = [];
 
-                // Добавляем существующие опции в селект
+                // Добавляем существующие опции в "уже выбранные"
                 options.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option;
-                    optionElement.text = option;
-                    selectElement.add(optionElement);
+                    const selectedOptionsList = document.createElement('li');
+                    const selectedOption = option;
+                    if (selectedOption && !selectedOptions.includes(selectedOption) && selectedOption!=="0") {
+                        selectedOptions.push(selectedOption);
+                        selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
+                        selectedOptionsElement.appendChild(selectedOptionsList);
+                    }
                 });
 
                 // Добавляем выбранную опцию
                 function addSelectedOption() {
                     const selectedOptionsList = document.createElement('li');
                     const selectedOption = selectElement.value;
-                    if (selectedOption && !selectedOptions.includes(selectedOption)) {
+                    if (selectedOption && !selectedOptions.includes(selectedOption) && selectedOption!=="0") {
                         selectedOptions.push(selectedOption);
                         selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
                         selectedOptionsElement.appendChild(selectedOptionsList);
                     }
+                    selectElement.value = "0";
                 }
 
                 // Удаляем выбранную опцию
@@ -220,12 +233,11 @@
                     }
                 }
 
-                // Обновляем событие изменения выбора опции
-                selectElement.addEventListener('change', () => {
-                    addSelectedOption();
-                });
+                function extractNamesFromJson(jsonString) {
+                    const obj = JSON.parse(jsonString);
+                    return obj.persons;
+                }
             </script>
-
         </div>
     </div>
 </div>

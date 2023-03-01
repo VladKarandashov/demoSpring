@@ -12,6 +12,7 @@ import ru.abradox.demospring.model.dto.ItemFilmImpl;
 import ru.abradox.demospring.model.entity.*;
 import ru.abradox.demospring.model.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,22 +31,22 @@ public class FilmController {
     @GetMapping("/editor")
     public String showEditorForm() {
         Long firstFilmId = filmRepository.findFirstRowId();
-        return "redirect:/film/editor/" +  firstFilmId;
+        return "redirect:/film/editor/" + firstFilmId;
     }
 
     @GetMapping("/editor/{id}")
     public String showEditorFormById(@PathVariable Long id, Model model) {
         Long firstFilmId = filmRepository.findFirstRowId();
         Long lastFilmId = filmRepository.findLastRowId();
-        if (id != 0 && !filmRepository.existsById(id)) return  "redirect:/film/editor/" +  firstFilmId;
+        if (id != 0 && !filmRepository.existsById(id)) return "redirect:/film/editor/" + firstFilmId;
 
         model.addAttribute("firstId", firstFilmId);
         model.addAttribute("lastId", lastFilmId);
 
         Long prevId = filmRepository.getPreviousId(id);
         Long nextId = filmRepository.getNextId(id);
-        prevId = prevId==null ? lastFilmId : prevId;
-        nextId = nextId==null ? firstFilmId : nextId;
+        prevId = prevId == null ? lastFilmId : prevId;
+        nextId = nextId == null ? firstFilmId : nextId;
         model.addAttribute("prevId", prevId);
         model.addAttribute("nextId", nextId);
 
@@ -65,13 +66,20 @@ public class FilmController {
 
         log.debug("Получение фильма основного:");
         Film film;
-        if (id==0) film = Film.builder()
-                .country(new Country())
-                .genre(new Genre())
-                .ageLimit(new AgeLimit())
-                .quality(new Quality())
-                .build();
-        else film = filmRepository.findById(id).orElseThrow();
+        if (id == 0) {
+            film = Film.builder()
+                    .country(new Country())
+                    .genre(new Genre())
+                    .ageLimit(new AgeLimit())
+                    .quality(new Quality())
+                    .build();
+            model.addAttribute("personsByFilm", new ArrayList<String>());
+        } else {
+            film = filmRepository.findById(id).orElseThrow();
+            List<String> namesPersons = film.getPeople().stream().map(Person::toString).toList();
+            model.addAttribute("personsByFilm", namesPersons);
+            log.debug("Имена людей: "+namesPersons);
+        }
         model.addAttribute("film", film);
 
         return "edit-movie";
