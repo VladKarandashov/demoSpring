@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.abradox.demospring.model.dto.ItemFilmImpl;
 import ru.abradox.demospring.model.entity.*;
 import ru.abradox.demospring.model.repository.*;
@@ -29,7 +30,8 @@ public class FilmController {
     private final PersonRepository personRepository;
 
     @GetMapping("/editor")
-    public String showEditorForm() {
+    public String showEditorForm(@RequestParam(required = false) Long choose) {
+        if (choose != null) return "redirect:/film/editor/" + choose;
         Long firstFilmId = filmRepository.findFirstRowId();
         return "redirect:/film/editor/" + firstFilmId;
     }

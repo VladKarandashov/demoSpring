@@ -14,21 +14,16 @@
 <div class="section content">
     <div class="items smallItems">
         <div class="form-row">
-            <label for="chooseMovie"></label>
-            <select size="1" id="chooseMovie" name="chooseMovie"></select>
-
-            <script>
-                const chooseMovieOptions = ['вяз 1', 'вяз2 ', 'вяз бесконечность'];
-
-                const chooseMovieSelectElement = document.getElementById('chooseMovie');
-
-                chooseMovieOptions.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = option;
-                    optionElement.text = option;
-                    chooseMovieSelectElement.add(optionElement);
-                });
-            </script>
+            <form th:action="@{/film/editor}" method="get">
+                <select id="choose" name="choose" onchange="this.form.submit()">
+                    <option th:value="${film.id}">Выбрать</option>
+                    <option th:each="filmItem : ${filmItems}"
+                            th:value="${filmItem.id}"
+                            th:selected="${filmItem.id == film.id}"
+                            th:text="${filmItem.id}+'. '+${filmItem.title}">
+                    </option>
+                </select>
+            </form>
         </div>
         <div class="form-row">
             <div class="button-wrapper">
@@ -189,7 +184,7 @@
             </div>
             <script>
                 const listStr = "[[${personsByFilm}]]";
-                const dataJson = "{\"persons\": "+listStr.replaceAll("&quot;", "\"")+"}";
+                const dataJson = "{\"persons\": " + listStr.replaceAll("&quot;", "\"") + "}";
 
                 // Массив для хранения всех опций
                 const options = extractNamesFromJson(dataJson);
@@ -204,7 +199,7 @@
                 options.forEach(option => {
                     const selectedOptionsList = document.createElement('li');
                     const selectedOption = option;
-                    if (selectedOption && !selectedOptions.includes(selectedOption) && selectedOption!=="0") {
+                    if (selectedOption && !selectedOptions.includes(selectedOption) && selectedOption !== "0") {
                         selectedOptions.push(selectedOption);
                         selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
                         selectedOptionsElement.appendChild(selectedOptionsList);
@@ -215,7 +210,7 @@
                 function addSelectedOption() {
                     const selectedOptionsList = document.createElement('li');
                     const selectedOption = selectElement.value;
-                    if (selectedOption && !selectedOptions.includes(selectedOption) && selectedOption!=="0") {
+                    if (selectedOption && !selectedOptions.includes(selectedOption) && selectedOption !== "0") {
                         selectedOptions.push(selectedOption);
                         selectedOptionsList.innerHTML = `${selectedOption} <button onclick="removeSelectedOption('${selectedOption}')">x</button>`;
                         selectedOptionsElement.appendChild(selectedOptionsList);
