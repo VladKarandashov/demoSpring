@@ -15,6 +15,7 @@ import ru.abradox.demospring.model.entity.Country;
 import ru.abradox.demospring.model.repository.CountryRepository;
 import ru.abradox.demospring.model.repository.FilmRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,14 +43,17 @@ public class StatisticsController {
             model.addAttribute("title", "Во всех странах");
             String json = objectMapper.writeValueAsString(filmRepository.countFilmsGenre().stream()
                     .map(el -> new GenreCountImpl(el.getGenre(), el.getCount()))
+                    .sorted(Comparator.comparingLong(GenreCountImpl::getGenreId))
                     .collect(Collectors.toList()));
             log.debug(json);
             model.addAttribute("countArray", json);
         } else {
-            Country country = countryRepository.findById(id).get();
+            Country country = countryRepository.findById(id).orElseThrow();
             model.addAttribute("title", "В стране: " + country.getTitle());
+            model.addAttribute("name", country.getTitle());
             String json = objectMapper.writeValueAsString(filmRepository.countFilmsGenreByCountry(country).stream()
                     .map(el -> new GenreCountImpl(el.getGenre(), el.getCount()))
+                    .sorted(Comparator.comparingLong(GenreCountImpl::getGenreId))
                     .collect(Collectors.toList()));
             log.debug(json);
             model.addAttribute("countArray", json);

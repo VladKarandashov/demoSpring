@@ -9,4 +9,8 @@ import ru.abradox.demospring.model.entity.Genre;
 public class GenreCountImpl {
     private Genre genre;
     private Long count;
+
+    public Long getGenreId(){
+        return this.getGenre().getId();
+    }
 }
