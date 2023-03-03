@@ -44,6 +44,7 @@
             myList.forEach(function(element) {
                 const option = document.createElement("option");
                 option.value = element.id;
+                if (selectEl.id === "selectOptions") option.value = element.title
                 option.text = element.id + ". " + element.title;
                 if (res.selected.id === element.id) option.selected = true;
                 selectEl.add(option);
@@ -220,7 +221,7 @@
                     </option>
                 </select>
                 <!-- Кнопка для добавления новой опции, сюда подвязываешь свой prompt для функции addOption -->
-                <button type="button" onclick="addOption()">+</button>
+                <button type="button" onclick="onClickPlus('/person/miniCreate', 'selectOptions')">+</button>
             </div>
             <!-- Выведенные строки выбранных опций -->
             <div class="form-row">
@@ -296,6 +297,7 @@
         const select = document.getElementById(idSelect);
         clearSelectExcept0(select);
         addElementsToSelect(select, res)
+        if (idSelect === "selectOptions") select.value = "0";
     }
 </script>
 </body>
