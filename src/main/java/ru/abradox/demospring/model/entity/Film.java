@@ -1,10 +1,6 @@
 package ru.abradox.demospring.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,14 +42,4 @@ public class Film {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JsonManagedReference
     private List<Person> people;
-
-    public Film(String title, String description, Integer duration, BigDecimal totalBoxOffice, BigDecimal budget, LocalDate releaseDate, Quality quality) {
-        this.title = title;
-        this.description = description;
-        this.duration = duration;
-        this.totalBoxOffice = totalBoxOffice;
-        this.budget = budget;
-        this.releaseDate = releaseDate;
-        this.quality = quality;
-    }
 }

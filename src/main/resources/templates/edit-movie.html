@@ -31,6 +31,50 @@
                 return null;
             }
         }
+        async function sendSaveRequest(data) {
+            console.log("Функция сохранения вызвана")
+            try {
+                const response = await fetch("/film/save", {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    return json;
+                } else {
+                    throw new Error('Response not OK');
+                }
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        }
+        async function sendDeleteRequest(data) {
+            console.log("Функция сохранения вызвана")
+            try {
+                const response = await fetch("/film/delete", {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    return json;
+                } else {
+                    throw new Error('Response not OK');
+                }
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        }
         function clearSelectExcept0(selectEl) {
             const options = selectEl.querySelectorAll("option");
             for (let i = 0; i < options.length; i++) {
@@ -118,7 +162,7 @@
         </div>
         <div class="form-row">
             <div class="button-wrapper">
-                <button id="delete-movie" class="carte">Удалить</button>
+                <button id="delete-movie" class="carte" onclick="onClickDelete()">Удалить</button>
             </div>
         </div>
         <div class="form-row">
@@ -302,9 +346,23 @@
     }
 </script>
 <script>
-    function onClickSave() {
-        //const accept = confirm("Завершить выполнение программы?");
-        //if(accept===false) return;
+    async function onClickDelete() {
+        const accept = confirm("Хотите удалить эту запись?");
+        if(accept===false) return;
+
+        const idElement = document.getElementById("movieId");
+        const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
+        const data = {
+            id: idValue
+        };
+        const res = await sendDeleteRequest(data);
+        window.location.href = '/film/editor';
+    }
+</script>
+<script>
+    async function onClickSave() {
+        const accept = confirm("Хотите сохранить изменения?");
+        if(accept===false) return;
 
         const idElement = document.getElementById("movieId");
         const titleElement = document.getElementById("title");
@@ -330,11 +388,34 @@
         const countryIdValue = countryElement.value
         const genreIdValue = genreElement.value
         const ageLimitIdValue = ageLimitElement.value
-        const qualityIdElement = qualityElement.value
+        const qualityIdValue = qualityElement.value
 
         const people = selectedOptions
 
-        console.log(idValue)
+        const data = {
+            id: idValue,
+            title: titleValue,
+            description: descriptionValue,
+            duration: durationValue,
+            totalBoxOffice: boxOfficeValue,
+            budget: budgetValue,
+            releaseDate: dateValue,
+            country: countryIdValue,
+            genre: genreIdValue,
+            ageLimit: ageLimitIdValue,
+            quality: qualityIdValue,
+            people: people
+        };
+
+        const res = await sendSaveRequest(data);
+
+        console.log(res)
+        if (res == null) {
+            alert("Поле title обязательно. Проверьте другие поля на корректность по инструкции")
+            return;
+        }
+        console.log("reboot")
+        window.location.href = '/film/editor/'+res.id;
     }
 </script>
 </body>

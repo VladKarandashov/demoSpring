@@ -78,17 +78,20 @@ public class FilmController {
             model.addAttribute("personsByFilm", new ArrayList<String>());
         } else {
             film = filmRepository.findById(id).orElseThrow();
+            if (film.getCountry() == null) film.setCountry(new Country());
+            if (film.getGenre() == null) film.setGenre(new Genre());
+            if (film.getAgeLimit() == null) film.setAgeLimit(new AgeLimit());
+            if (film.getQuality() == null) film.setQuality(new Quality());
+            if (film.getPeople() == null) film.setPeople(new ArrayList<>());
             List<String> namesPersons = film.getPeople().stream().map(Person::toString).toList();
             model.addAttribute("personsByFilm", namesPersons);
             log.debug("Имена людей: "+namesPersons);
         }
+
         model.addAttribute("film", film);
 
         return "edit-movie";
     }
-
-    // TODO сделать кнопку сохранить
-    // TODO сделать кнопку удалить после сохранения
 
     // TODO связанный поиск
 }
