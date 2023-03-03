@@ -6,6 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактор фильмов</title>
     <link rel="stylesheet" href="/css/styles.css"/>
+    <script>
+        async function sendPostRequest(url, myTitle) {
+            console.log("Функция вызвана")
+            const data = { title: myTitle };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    return json;
+                } else {
+                    throw new Error('Response not OK');
+                }
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        }
+        function clearSelectExcept0(selectEl) {
+            const options = selectEl.querySelectorAll("option");
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value !== "0") {
+                    options[i].remove();
+                }
+            }
+        }
+        function addElementsToSelect(selectEl, res) {
+            const myList = res.list
+            myList.forEach(function(element) {
+                const option = document.createElement("option");
+                option.value = element.id;
+                option.text = element.id + ". " + element.title;
+                if (res.selected.id === element.id) option.selected = true;
+                selectEl.add(option);
+            });
+        }
+    </script>
 </head>
 <body>
 <header class="section header">
@@ -89,31 +133,31 @@
             <p id="movieId"><span th:text="${film.id}"></span></p>
         </div>
         <div class="form-row">
-            <label for="title">title</label>
+            <label for="title">Название</label>
             <input id="title" name="title" type="text" th:field="${film.title}"/>
         </div>
         <div class="form-row">
-            <label for="description">description</label>
+            <label for="description">Описание</label>
             <textarea id="description" name="description" th:field="${film.description}"></textarea>
         </div>
         <div class="form-row">
-            <label for="duration">duration</label>
+            <label for="duration">Длина</label>
             <input id="duration" name="duration" type="number" th:field="${film.duration}"/>
         </div>
         <div class="form-row">
-            <label for="box-office">box-office</label>
+            <label for="box-office">Сборы</label>
             <input id="box-office" name="box-office" type="number" th:field="${film.totalBoxOffice}"/>
         </div>
         <div class="form-row">
-            <label for="budget">budget</label>
+            <label for="budget">Бюджет</label>
             <input id="budget" name="budget" type="number" th:field="${film.budget}"/>
         </div>
         <div class="form-row">
-            <label for="release-date">release-date</label>
+            <label for="release-date">Дата</label>
             <input id="release-date" name="release-date" type="date" th:field="${film.releaseDate}"/>
         </div>
         <div class="form-row">
-            <label for="country">country</label>
+            <label for="country">Страна</label>
             <select size="1" id="country" name="country">
                 <option th:value="0">Выбрать</option>
                 <option th:each="country : ${countries}"
@@ -125,7 +169,7 @@
             <button type="button" onclick="addOption()">+</button>
         </div>
         <div class="form-row">
-            <label for="genre">genre</label>
+            <label for="genre">Жанр</label>
             <select size="1" id="genre" name="genre">
                 <option th:value="0">Выбрать</option>
                 <option th:each="genre : ${genres}"
@@ -134,10 +178,10 @@
                         th:text="${genre.id}+'. '+${genre.title}">
                 </option>
             </select>
-            <button type="button" onclick="addOption()">+</button>
+            <button type="button" onclick="onClickPlusGenre()">+</button>
         </div>
         <div class="form-row">
-            <label for="ageLimit">age limit</label>
+            <label for="ageLimit">Возраст</label>
             <select size="1" id="ageLimit" name="ageLimit">
                 <option th:value="0">Выбрать</option>
                 <option th:each="ageLimit : ${age_limits}"
@@ -149,7 +193,7 @@
             <button type="button" onclick="addOption()">+</button>
         </div>
         <div class="form-row">
-            <label for="quality">quality</label>
+            <label for="quality">Качество</label>
             <select size="1" id="quality" name="quality">
                 <option th:value="0">Выбрать</option>
                 <option th:each="quality : ${qualities}"
@@ -167,7 +211,7 @@
         <div class="multipleSelect">
             <!-- Список с выбором опций -->
             <div class="form-row">
-                <label for="selectOptions">persons</label>
+                <label for="selectOptions">Участники</label>
                 <select size="1" id="selectOptions" onchange="addSelectedOption()">
                     <option th:value="0">Выбрать</option>
                     <option th:each="person : ${persons}"
@@ -236,6 +280,24 @@
         </div>
     </div>
 </div>
+<script>
+    async function onClickPlusGenre() {
+        const title = prompt("Введите новое значение:");
+        if (title == null || title === "") {
+            alert("Неправильное значение")
+            return;
+        }
+        const res = await sendPostRequest("/genre/miniCreate", title);
+        console.log(res)
+        if (res == null) {
+            alert("Неправильное значение")
+            return;
+        }
+        const genreSelect = document.getElementById("genre");
+        clearSelectExcept0(genreSelect);
+        addElementsToSelect(genreSelect, res)
+    }
+</script>
 </body>
 </html>
 
