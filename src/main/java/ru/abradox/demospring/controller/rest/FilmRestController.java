@@ -2,6 +2,7 @@ package ru.abradox.demospring.controller.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class FilmRestController {
     private final PersonRepository personRepository;
 
     @PostMapping("/save")
-    public Film saveFilm(@RequestBody MiniFilmDTO request) {
+    public Film saveFilm(@Valid @RequestBody MiniFilmDTO request) {
         log.debug("Запрос на сохранение");
         log.debug(request.toString());
         if (request.getTitle().isBlank())
