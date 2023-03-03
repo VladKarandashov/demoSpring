@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import ru.abradox.demospring.model.dto.CreateRequest;
+import ru.abradox.demospring.model.dto.MiniFilmDTO;
 import ru.abradox.demospring.model.entity.Film;
 import ru.abradox.demospring.model.repository.FilmRepository;
 
@@ -29,6 +31,22 @@ import java.util.stream.Stream;
 public class FilmRestController {
 
     private final FilmRepository filmRepository;
+
+    @PostMapping("/save")
+    public Film saveFilm(@RequestBody MiniFilmDTO request) {
+        String title = request.getTitle();
+        if (title.isBlank()) throw new RuntimeException();
+
+        Film film;
+        if (request.getId() == null) {
+            film = new Film();
+        } else {
+            film = filmRepository.findById(request.getId()).orElseThrow();
+        }
+
+        filmRepository.save(film);
+        return null;
+    }
 
     @GetMapping
     public List<Film> getAllFilms(){

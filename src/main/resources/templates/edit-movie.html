@@ -90,7 +90,7 @@
         </div>
         <div class="form-row">
             <div class="button-wrapper">
-                <button id="save"><img src="/images/save.png" width="30" alt="сохранить"/></button>
+                <button id="save" onclick="onClickSave()"><img src="/images/save.png" width="30" alt="сохранить"/></button>
             </div>
         </div>
         <div class="form-row">
@@ -299,6 +299,42 @@
         addElementsToSelect(select, res)
         if (idSelect === "selectOptions") select.value = "0";
         alert("Успешно добавлено")
+    }
+</script>
+<script>
+    function onClickSave() {
+        //const accept = confirm("Завершить выполнение программы?");
+        //if(accept===false) return;
+
+        const idElement = document.getElementById("movieId");
+        const titleElement = document.getElementById("title");
+        const descriptionElement = document.getElementById("description");
+        const durationElement = document.getElementById("duration");
+        const boxOfficeElement = document.getElementById("box-office");
+        const budgetElement = document.getElementById("budget");
+        const dateElement = document.getElementById("release-date");
+
+        const countryElement = document.getElementById("country");
+        const genreElement = document.getElementById("genre");
+        const ageLimitElement = document.getElementById("ageLimit");
+        const qualityElement = document.getElementById("quality");
+
+        const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
+        const titleValue = titleElement.value
+        const descriptionValue = descriptionElement.value
+        const durationValue = durationElement.value
+        const boxOfficeValue = boxOfficeElement.value
+        const budgetValue = budgetElement.value
+        const dateValue = dateElement.value
+
+        const countryIdValue = countryElement.value
+        const genreIdValue = genreElement.value
+        const ageLimitIdValue = ageLimitElement.value
+        const qualityIdElement = qualityElement.value
+
+        const people = selectedOptions
+
+        console.log(idValue)
     }
 </script>
 </body>
