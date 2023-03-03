@@ -81,6 +81,13 @@ public class FilmRestController {
         if (id == null || !filmRepository.existsById(id)) {
             throw new RuntimeException();
         }
+        Film film = filmRepository.findById(id).orElseThrow();
+        film.setCountry(null);
+        film.setGenre(null);
+        film.setAgeLimit(null);
+        film.setQuality(null);
+        film.setPeople(new ArrayList<>());
+        filmRepository.save(film);
         filmRepository.deleteById(id);
     }
 
