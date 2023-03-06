@@ -144,7 +144,7 @@
                     <option th:each="filmItem : ${filmItems}"
                             th:value="${filmItem.id}"
                             th:selected="${filmItem.id == film.id}"
-                            th:text="${filmItem.id}+'. '+${filmItem.title}">
+                            th:text="${filmItem.title}">
                     </option>
                 </select>
             </form>
@@ -152,7 +152,7 @@
         <div class="form-row">
             <div class="button-wrapper">
                 <a th:href="@{/film/editor/{id}(id=${firstId})}">
-                    <button id="flash-back">
+                    <button id="flash-back" title="К первому">
                         <img src="/images/flash-back.png" width="30" alt="к первому"/>
                     </button>
                 </a>
@@ -161,7 +161,7 @@
         <div class="form-row">
             <div class="button-wrapper">
                 <a th:href="@{/film/editor/{id}(id=${prevId})}">
-                    <button id="back">
+                    <button id="back" title="Назад">
                         <img src="/images/back.png" width="30" alt="предыдущий"/>
                     </button>
                 </a>
@@ -169,20 +169,20 @@
         </div>
         <div class="form-row">
             <div class="button-wrapper">
-                <button id="save" onclick="onClickSave()"><img src="/images/save.png" width="30" alt="сохранить"/></button>
+                <button title="Сохранить" id="save" onclick="onClickSave()"><img src="/images/img.png" width="30" alt="сохранить"/></button>
             </div>
         </div>
         <div class="form-row">
             <div class="button-wrapper">
                 <a th:href="@{/film/editor/{id}(id=${nextId})}">
-                    <button id="forward"><img src="/images/forward.png" width="30" alt="следующий"/></button>
+                    <button title="Вперёд" id="forward"><img src="/images/forward.png" width="30" alt="следующий"/></button>
                 </a>
             </div>
         </div>
         <div class="form-row">
             <div class="button-wrapper">
                 <a th:href="@{/film/editor/{id}(id=${lastId})}">
-                    <button id="flash-forward"><img src="/images/flash-forward.png" width="30" alt="к последнему"/>
+                    <button title="К последнему" id="flash-forward"><img src="/images/flash-forward.png" width="30" alt="к последнему"/>
                     </button>
                 </a>
             </div>
@@ -246,7 +246,7 @@
                         th:text="${country.title}">
                 </option>
             </select>
-            <button type="button" onclick="onClickPlus('/country/miniCreate', 'country')">+</button>
+            <button title="Добавить" type="button" onclick="onClickPlus('/country/miniCreate', 'country')">+</button>
         </div>
         <div class="form-row">
             <label for="genre">Жанр</label>
@@ -258,7 +258,7 @@
                         th:text="${genre.title}">
                 </option>
             </select>
-            <button type="button" onclick="onClickPlus('/genre/miniCreate', 'genre')">+</button>
+            <button title="Добавить" type="button" onclick="onClickPlus('/genre/miniCreate', 'genre')">+</button>
         </div>
         <div class="form-row">
             <label for="ageLimit">Возраст</label>
@@ -270,7 +270,7 @@
                         th:text="${ageLimit.category}">
                 </option>
             </select>
-            <button type="button" onclick="onClickPlus('/ageLimit/miniCreate', 'ageLimit')">+</button>
+            <button title="Добавить" type="button" onclick="onClickPlus('/ageLimit/miniCreate', 'ageLimit')">+</button>
         </div>
         <div class="form-row">
             <label for="quality">Качество</label>
@@ -282,7 +282,7 @@
                         th:text="${quality.type}">
                 </option>
             </select>
-            <button type="button" onclick="onClickPlus('/quality/miniCreate', 'quality')">+</button>
+            <button title="Добавить" type="button" onclick="onClickPlus('/quality/miniCreate', 'quality')">+</button>
         </div>
 
 
@@ -300,7 +300,7 @@
                     </option>
                 </select>
                 <!-- Кнопка для добавления новой опции, сюда подвязываешь свой prompt для функции addOption -->
-                <button type="button" onclick="onClickPlus('/person/miniCreate', 'selectOptions')">+</button>
+                <button title="Добавить" type="button" onclick="onClickPlus('/person/miniCreate', 'selectOptions')">+</button>
             </div>
             <!-- Выведенные строки выбранных опций -->
             <div class="form-row">
