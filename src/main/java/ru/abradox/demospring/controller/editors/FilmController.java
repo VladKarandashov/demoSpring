@@ -14,6 +14,7 @@ import ru.abradox.demospring.model.entity.*;
 import ru.abradox.demospring.model.repository.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -55,11 +56,11 @@ public class FilmController {
         var filmItems = filmRepository.findAllBy().stream().map(el -> new ItemFilmImpl(el.getId(), el.getTitle())).toList();
         model.addAttribute("filmItems", filmItems);
 
-        List<Country> countries = countryRepository.findAll();
-        List<AgeLimit> age_limits = ageLimitRepository.findAll();
-        List<Genre> genres = genreRepository.findAll();
-        List<Quality> qualities = qualityRepository.findAll();
-        List<Person> persons = personRepository.findAll();
+        List<Country> countries = countryRepository.findAll().stream().sorted(Comparator.comparing(Country::getTitle)).toList();
+        List<AgeLimit> age_limits = ageLimitRepository.findAll().stream().sorted(Comparator.comparing(AgeLimit::getCategory)).toList();
+        List<Genre> genres = genreRepository.findAll().stream().sorted(Comparator.comparing(Genre::getTitle)).toList();
+        List<Quality> qualities = qualityRepository.findAll().stream().sorted(Comparator.comparing(Quality::getType)).toList();
+        List<Person> persons = personRepository.findAll().stream().sorted(Comparator.comparing(Person::getFullName)).toList();
         model.addAttribute("countries", countries);
         model.addAttribute("age_limits", age_limits);
         model.addAttribute("genres", genres);

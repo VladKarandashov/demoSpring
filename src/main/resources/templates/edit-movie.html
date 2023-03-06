@@ -186,15 +186,15 @@
             <textarea id="description" name="description" th:field="${film.description}"></textarea>
         </div>
         <div class="form-row">
-            <label for="duration">Длина</label>
+            <label for="duration">Длина(мин)</label>
             <input id="duration" name="duration" type="number" th:field="${film.duration}"/>
         </div>
         <div class="form-row">
-            <label for="box-office">Сборы</label>
+            <label for="box-office">Сборы ($)</label>
             <input id="box-office" name="box-office" type="number" th:field="${film.totalBoxOffice}"/>
         </div>
         <div class="form-row">
-            <label for="budget">Бюджет</label>
+            <label for="budget">Бюджет ($)</label>
             <input id="budget" name="budget" type="number" th:field="${film.budget}"/>
         </div>
         <div class="form-row">
@@ -208,7 +208,7 @@
                 <option th:each="country : ${countries}"
                         th:value="${country.id}"
                         th:selected="${country.id == film.country.id}"
-                        th:text="${country.id}+'. '+${country.title}">
+                        th:text="${country.title}">
                 </option>
             </select>
             <button type="button" onclick="onClickPlus('/country/miniCreate', 'country')">+</button>
@@ -220,7 +220,7 @@
                 <option th:each="genre : ${genres}"
                         th:value="${genre.id}"
                         th:selected="${genre.id == film.genre.id}"
-                        th:text="${genre.id}+'. '+${genre.title}">
+                        th:text="${genre.title}">
                 </option>
             </select>
             <button type="button" onclick="onClickPlus('/genre/miniCreate', 'genre')">+</button>
@@ -232,7 +232,7 @@
                 <option th:each="ageLimit : ${age_limits}"
                         th:value="${ageLimit.id}"
                         th:selected="${ageLimit.id == film.ageLimit.id}"
-                        th:text="${ageLimit.id}+'. '+${ageLimit.category}">
+                        th:text="${ageLimit.category}">
                 </option>
             </select>
             <button type="button" onclick="onClickPlus('/ageLimit/miniCreate', 'ageLimit')">+</button>
@@ -244,7 +244,7 @@
                 <option th:each="quality : ${qualities}"
                         th:value="${quality.id}"
                         th:selected="${quality.id == film.quality.id}"
-                        th:text="${quality.id}+'. '+${quality.type}">
+                        th:text="${quality.type}">
                 </option>
             </select>
             <button type="button" onclick="onClickPlus('/quality/miniCreate', 'quality')">+</button>
@@ -261,7 +261,7 @@
                     <option th:value="0">Выбрать</option>
                     <option th:each="person : ${persons}"
                             th:value="${person.fullName}"
-                            th:text="${person.id}+'. '+${person.fullName}">
+                            th:text="${person.fullName}">
                     </option>
                 </select>
                 <!-- Кнопка для добавления новой опции, сюда подвязываешь свой prompt для функции addOption -->

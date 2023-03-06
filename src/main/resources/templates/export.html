@@ -47,10 +47,10 @@
         <td th:text="${film.totalBoxOffice}"></td>
         <td th:text="${film.budget}"></td>
         <td th:text="${film.releaseDate}"></td>
-        <td th:text="${film.country.title}"></td>
-        <td th:text="${film.genre.title}"></td>
-        <td th:text="${film.ageLimit.category}"></td>
-        <td th:text="${film.quality.type}"></td>
+        <td th:text="${film.country != null} ? ${film.country.title} : '-'"></td>
+        <td th:text="${film.genre != null} ? ${film.genre.title} : '-'"></td>
+        <td th:text="${film.ageLimit != null} ? ${film.ageLimit.category} : '-'"></td>
+        <td th:text="${film.quality != null} ? ${film.quality.type} : '-'"></td>
         <td>
             <span th:each="person : ${film.people}" th:text="${person.fullName}+', '" th:if="${!#lists.isEmpty(film.people)}"></span>
             <span th:if="${#lists.isEmpty(film.people)}">-</span>

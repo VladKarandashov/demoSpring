@@ -40,9 +40,9 @@ public class SearchRestController {
             ageLimitSet.add(el.getAgeLimit());
         });
         var res = ItemsDTO.builder()
-                .genreList(genreSet.stream().sorted(Comparator.comparingLong(Genre::getId)).toList())
-                .countryList(countrySet.stream().sorted(Comparator.comparingLong(Country::getId)).toList())
-                .ageLimitList(ageLimitSet.stream().sorted(Comparator.comparingLong(AgeLimit::getId)).toList())
+                .genreList(genreSet.stream().filter(Objects::nonNull).sorted(Comparator.comparingLong(Genre::getId)).toList())
+                .countryList(countrySet.stream().filter(Objects::nonNull).sorted(Comparator.comparingLong(Country::getId)).toList())
+                .ageLimitList(ageLimitSet.stream().filter(Objects::nonNull).sorted(Comparator.comparingLong(AgeLimit::getId)).toList())
                 .build();
         log.debug(String.valueOf(res));
         return res;
