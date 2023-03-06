@@ -35,10 +35,45 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .button-table button {
+            width: 150px;
+            height: 60px;
+            border: none;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+            background-color: #2cf5f5;
+            color: black;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
-<button onclick="location.href='/'">В главное меню</button>
+<table class="button-table">
+    <tr>
+        <td><h1>"Фильмы"</h1></td>
+        <td>
+            <button onclick="location.href='/film/editor'">Ввод</button>
+        </td>
+        <td>
+            <button onclick="location.href='/search'">Поиск</button>
+        </td>
+        <td>
+            <button onclick="location.href='/statistic'">Статистика</button>
+        </td>
+        <td>
+            <button onclick="location.href='/help'">Помощь</button>
+        </td>
+        <td>
+            <button onclick="location.href='/export'">Выгрузка файла БД</button>
+        </td>
+        <td>
+            <button onclick="location.href='/'">В главное меню</button>
+        </td>
+    </tr>
+</table>
 
 <h1>Поиск</h1>
 <table class="center" id="myTable">

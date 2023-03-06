@@ -17,6 +17,11 @@
             margin-top: 50px;
         }
 
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
         table {
             margin: 0 auto;
         }
@@ -25,36 +30,41 @@
             width: 400px;
             height: 60px;
             border: none;
-            font-size: 25px;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+            background-color: #2cf5f5;
+            color: black;
+        }
+
+        .button-table button {
+            width: 200px;
+            height: 60px;
+            border: none;
+            font-size: 20px;
             font-family: 'Pacifico', cursive;
             background-color: #2cf5f5;
             color: black;
         }
     </style>
+    </style>
 </head>
 <body>
-
-<h1>База данных "Фильмы"</h1>
-
-<table>
+<table class="button-table">
     <tr>
+        <td><h1>"Фильмы"</h1></td>
         <td>
             <button onclick="location.href='/film/editor'">Ввод</button>
         </td>
         <td>
             <button onclick="location.href='/search'">Поиск</button>
         </td>
-    </tr>
-    <tr>
         <td>
             <button onclick="location.href='/statistic'">Статистика</button>
         </td>
         <td>
             <button onclick="location.href='/help'">Помощь</button>
         </td>
-    </tr>
-    <tr>
-        <td colspan="3">
+        <td>
             <button onclick="location.href='/export'">Выгрузка файла БД</button>
         </td>
     </tr>
