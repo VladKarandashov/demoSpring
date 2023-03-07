@@ -49,7 +49,7 @@
     <input type="hidden" th:field="*{id}"/>
     <p>Id: <span th:text="${person.id}"></span></p>
     <p><label>
-      Полное имя: <input type="text" th:field="${person.fullName}" required="required"/>
+      Полное имя: <input type="text" th:field="${person.fullName}" pattern="[А-ЯA-Z0-9][а-яa-z0-9]*" required="required"/>
     </label></p>
     <p><label>
       Дата рождения: <input type="date" th:field="${person.birthday}"/>

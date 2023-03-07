@@ -49,7 +49,7 @@
     <input type="hidden" th:field="*{id}"/>
     <p>Id: <span th:text="${quality.id}"></span></p>
     <p><label>
-      Название: <input type="text" th:field="${quality.type}" required="required"/>
+      Название: <input type="text" pattern="[А-ЯA-Z0-9][а-яa-z0-9]*" th:field="${quality.type}" required="required"/>
     </label></p>
     <p></p>
     <button type="submit">Сохранить</button>

@@ -214,7 +214,7 @@
         </div>
         <div class="form-row">
             <label for="title">Название</label>
-            <input id="title" name="title" type="text" th:field="${film.title}"/>
+            <input id="title" name="title" pattern="[А-ЯA-Z0-9][а-яa-z0-9]*" required type="text" th:field="${film.title}"/>
         </div>
         <div class="form-row">
             <label for="description">Описание</label>
@@ -362,7 +362,10 @@
 </div>
 <script>
     async function onClickPlus(url, idSelect) {
-        const title = prompt("Введите новое значение (с большой буквы):");
+        let title = prompt("Введите новое значение (с большой буквы или цифры):");
+        while (!/^[А-ЯA-Z0-9][а-яa-z0-9]*$/.test(title) && title !== null && title !== "") {
+            title = prompt("Введите новое значение (с большой буквы или цифры):");
+        }
         if (title == null || title === "") {
             alert("Неправильное значение")
             return;

@@ -49,7 +49,7 @@
         <input type="hidden" th:field="*{id}"/>
         <p>Id: <span th:text="${country.id}"></span></p>
         <p><label>
-            Название: <input type="text" th:field="${country.title}" required="required"/>
+            Название: <input type="text" th:field="${country.title}" pattern="[А-ЯA-Z0-9][а-яa-z0-9]*" required="required"/>
         </label></p>
         <p><label>
             Ссылка: <input type="text" th:field="${country.link}"/>
