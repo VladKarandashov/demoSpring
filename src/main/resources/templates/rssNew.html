@@ -19,18 +19,18 @@
 <h1>Добавить новость</h1>
 
 <form>
-    <label for="title">Заголовок: </label>
-    <input type="text" id="title" name="title" minlength="1" maxlength="40" required><br>
-    <label for="description">Описание: </label>
-    <textarea id="description" name="description" minlength="1" maxlength="254" required></textarea><br>
-    <label for="link">Ссылка на источник: </label>
-    <input type="text" id="link" name="link" minlength="1" maxlength="254" required><br>
-    <label for="author">Автор новости: </label>
-    <input type="text" id="author" name="author" minlength="1" maxlength="40" required><br>
-    <label for="imageLink">Ссылка на изображение: </label>
-    <input type="text" id="imageLink" name="imageLink" minlength="1" maxlength="254" required><br>
+    <label for="title">Заголовок: </label><br>
+    <input type="text" id="title" name="title" minlength="1" maxlength="40" width="700" required><br>
+    <label for="description">Описание: </label><br>
+    <textarea id="description" name="description" minlength="1" maxlength="254" cols="60" rows="5" required></textarea><br>
+    <label for="link">Ссылка на источник: </label><br>
+    <input type="text" id="link" name="link" minlength="1" maxlength="254" width="700" required><br>
+    <label for="author">Автор новости: </label><br>
+    <input type="text" id="author" name="author" minlength="1" maxlength="40" width="700" required><br>
+    <label for="imageLink">Ссылка на изображение: </label><br>
+    <input type="text" id="imageLink" name="imageLink" minlength="1" maxlength="254" width="700" required><br>
 </form>
-
+<br>
 <button onclick="createNews()">Добавить</button>
 
 <script>
