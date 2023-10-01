@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Помощь</title>
+    <style>
+        body {
+            text-align: center;
+            font-size: 20px;
+            background-color: #DFF0E2;
+        }
+        button {
+            width: 100px;
+            height: 40px;
+            border: none;
+            font-size: 16px;
+            background-color: #2cf5f5;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<h1>Наши партнёры</h1>
+<hr>
+
+<br> <br>
+
+<p class="p">
+    <img width="500px," src="/images/mult.png" alt="Союзмультфильм"> <br>
+    АО КИНОСТУДИЯ "СОЮЗМУЛЬТФИЛЬМ" <br>
+    Адрес: 127427, город Москва, ул Академика Королева, д. 21 стр. 1 <br>
+    Телефон: +7 (495) 308-00-32 <br>
+    Сайт: <a href="https://souzmult.ru/">souzmult.ru</a> <br>
+</p>
+
+<p class="p">
+    <img width="500px," src="/images/kinopoisk.png" alt="Кинопоиск"> <br>
+    ООО "Кинопоиск" <br>
+    115035, город Москва, Садовническая ул, д. 82 стр. 2, помещ. 9а01 <br>
+    Телефон: 8 (800) 600 30 30. <br>
+    Сайт: <a href="https://www.kinopoisk.ru/">kinopoisk.ru</a> <br>
+</p>
+</body>
+</html>
