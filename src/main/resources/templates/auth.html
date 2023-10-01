@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<script>
+    // Проверяем наличие куки JSESSIONID
+    if (document.cookie.includes("JSESSIONID")) {
+        // Получаем значение куки JSESSIONID
+        let jsessionId = document.cookie.match(/JSESSIONID=([^;]+)/)[1];
+
+        // Устанавливаем куку сессии JSESSIONID
+        document.cookie = `JSESSIONID=${jsessionId}; path=/`;
+
+        // Перезагружаем текущую страницу
+        location.reload();
+    }
+</script>
+
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h2>Регистрация / Вход</h2>
+<form>
+    <label for="login">Логин: </label>
+    <input type="text" id="login" name="login" minlength="1" maxlength="32" pattern="[a-zA-ZА-Яа-я0-9]{1,31}" required><br>
+    <label for="password">Пароль: </label>
+    <input type="password" id="password" name="password" minlength="1" maxlength="32" pattern="[a-zA-Z0-9]{1,32}"><br>
+</form>
+
+<button onclick="login()">Войти</button>
+<button onclick="register()">Зарегистрироваться</button>
+
+<script>
+    function login() {
+        var login = document.getElementById("login").value;
+        var password = document.getElementById("password").value;
+
+        if (login === '') {
+            alert("Логин не может быть пустым")
+            return;
+        }
+
+        if(/[a-zA-ZА-Яа-я0-9]{1,31}/.test(login) === false){
+            alert("Логин может состоять только из букв и/или цифр")
+            return;
+        }
+
+        if (password === '') {
+            alert("Пароль не может быть пустым")
+            return;
+        }
+
+        if(/[a-zA-ZА-Яа-я0-9]{1,31}/.test(password) === false){
+            alert("Пароль может состоять только из букв и/или цифр")
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/auth/login", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var JSESSIONID = xhr.responseText;
+
+                    document.cookie = "JSESSIONID=" + JSESSIONID;
+                    console.log("значение куки JSESSIONID="+JSESSIONID)
+                    window.location.href = '/auth';
+                } else if (xhr.status === 403) {
+                    alert("Неправильный логин или пароль");
+                }
+            }
+        };
+
+        var data = JSON.stringify({ login: login, password: password });
+        xhr.send(data);
+    }
+
+    function register() {
+        var login = document.getElementById("login").value;
+        var password = document.getElementById("password").value;
+
+        if (login === '') {
+            alert("Логин не может быть пустым")
+            return;
+        }
+
+        if(/[a-zA-ZА-Яа-я0-9]{1,31}/.test(login) === false){
+            alert("Логин может состоять только из букв и/или цифр")
+            return;
+        }
+
+        if (password === '') {
+            alert("Пароль не может быть пустым")
+            return;
+        }
+
+        if(/[a-zA-ZА-Яа-я0-9]{1,31}/.test(password) === false){
+            alert("Пароль может состоять только из букв и/или цифр")
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/auth/registration", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var JSESSIONID = xhr.responseText;
+
+                    document.cookie = "JSESSIONID=" + JSESSIONID;
+                    console.log("значение куки JSESSIONID="+JSESSIONID)
+                    window.location.href = '/auth';
+                } else if (xhr.status === 403) {
+                    alert("Пользователь с таким именем уже существует");
+                }
+            }
+        };
+
+        var data = JSON.stringify({ login: login, password: password });
+        xhr.send(data);
+    }
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h2>Вы вошли в систему</h2>
+
+<button onclick="logout()">Выйти</button>
+
+<script>
+    function logout() {
+        document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = '/auth';
+    }
+</script>
+
+</body>
+</html>

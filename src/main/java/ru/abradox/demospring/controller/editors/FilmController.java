@@ -2,9 +2,11 @@ package ru.abradox.demospring.controller.editors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +33,16 @@ public class FilmController {
     private final PersonRepository personRepository;
 
     @GetMapping("/editor")
-    public String showEditorForm(@RequestParam(required = false) Long choose) {
+    public String showEditorForm(@RequestParam(required = false) Long choose, @CookieValue(value = "JSESSIONID", required = false) String token) {
+        if (StringUtils.isBlank(token)) return "redirect:/auth";
         if (choose != null) return "redirect:/film/editor/" + choose;
         Long firstFilmId = filmRepository.findFirstRowId();
         return "redirect:/film/editor/" + firstFilmId;
     }
 
     @GetMapping("/editor/{id}")
-    public String showEditorFormById(@PathVariable Long id, Model model) {
+    public String showEditorFormById(@PathVariable Long id, Model model, @CookieValue(value = "JSESSIONID", required = false) String token) {
+        if (StringUtils.isBlank(token)) return "redirect:/auth";
         Long firstFilmId = filmRepository.findFirstRowId();
         Long lastFilmId = filmRepository.findLastRowId();
         if (id != 0 && !filmRepository.existsById(id)) return "redirect:/film/editor/" + firstFilmId;

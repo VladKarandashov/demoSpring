@@ -2,6 +2,7 @@ package ru.abradox.demospring.controller.editors;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,8 @@ public class PersonController {
     }
 
     @GetMapping("/editor")
-    public String showEditorForm(@RequestParam(name = "person", required = false) Long id, Model model) {
+    public String showEditorForm(@RequestParam(name = "person", required = false) Long id, Model model, @CookieValue(value = "JSESSIONID", required = false) String token) {
+        if (StringUtils.isBlank(token)) return "redirect:/auth";
         List<Person> persons = objectRepository.findAll();
         model.addAttribute("persons", persons);
         Person person = (id == null) ? new Person() : objectRepository.findById(id).orElse(new Person());

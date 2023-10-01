@@ -2,6 +2,7 @@ package ru.abradox.demospring.controller.editors;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,8 @@ public class AgeLimitController {
     }
 
     @GetMapping("/editor")
-    public String showEditorForm(@RequestParam(name = "age_limit", required = false) Long id, Model model) {
+    public String showEditorForm(@RequestParam(name = "age_limit", required = false) Long id, Model model, @CookieValue(value = "JSESSIONID", required = false) String token) {
+        if (StringUtils.isBlank(token)) return "redirect:/auth";
         List<AgeLimit> age_limits = objectRepository.findAll();
         model.addAttribute("age_limits", age_limits);
         AgeLimit age_limit = (id == null) ? new AgeLimit() : objectRepository.findById(id).orElse(new AgeLimit());
