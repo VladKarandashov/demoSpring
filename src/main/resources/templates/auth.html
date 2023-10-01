@@ -30,14 +30,19 @@
 </script>
 <br>
 <!--end of Navigation bar-->
+<h1>Для редактирования новостей и записей БД - необходимо войти</h1>
+<hr>
+<br>
 
 <h2>Регистрация / Вход</h2>
+<br>
 <form>
     <label for="login">Логин: </label>
     <input type="text" id="login" name="login" minlength="1" maxlength="32" pattern="[a-zA-ZА-Яа-я0-9]{1,31}" required><br>
     <label for="password">Пароль: </label>
     <input type="password" id="password" name="password" minlength="1" maxlength="32" pattern="[a-zA-Z0-9]{1,32}"><br>
 </form>
+<br>
 
 <button onclick="login()">Войти</button>
 <button onclick="register()">Зарегистрироваться</button>

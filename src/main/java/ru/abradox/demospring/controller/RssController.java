@@ -1,6 +1,5 @@
 package ru.abradox.demospring.controller;
 
-import com.apptasticsoftware.rssreader.RssReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -9,14 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.abradox.demospring.model.entity.NewsItem;
 import ru.abradox.demospring.model.entity.RssUrl;
 import ru.abradox.demospring.model.repository.NewsRepository;
 import ru.abradox.demospring.model.repository.RssUrlRepository;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 @Slf4j
 @Controller
@@ -29,21 +25,16 @@ public class RssController {
     @GetMapping("/rss")
     public String getRssHTML(Model model) {
 
-        var news = new ArrayList<NewsItem>();
+        var items = newsRepository.findAll();
+        var news = new ArrayList<>(items);
 
         var urls = rssUrlRepository.findAll().stream().map(RssUrl::getUrl).toList();
         if (!urls.isEmpty()) {
             urls.forEach(url -> {
-                try {
-                    var items = new ArrayList<>(new RssReader().read(url).limit(4).map(NewsItem::new).toList());
-                    news.addAll(items.stream().toList());
-                } catch (IOException ignored) {}
+                var itemsFromRss = RssUtils.getNewsFromRss(url);
+                news.addAll(itemsFromRss);
             });
         }
-        Collections.shuffle(news);
-        var items = newsRepository.findAll();
-        news.addAll(items);
-
         model.addAttribute("news", news);
         return "/rss";
     }

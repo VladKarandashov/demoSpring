@@ -1,6 +1,5 @@
 package ru.abradox.demospring.model.entity;
 
-import com.apptasticsoftware.rssreader.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

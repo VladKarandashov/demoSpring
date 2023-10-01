@@ -1,6 +1,5 @@
 package ru.abradox.demospring.model.entity;
 
-import com.apptasticsoftware.rssreader.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,12 +40,4 @@ public class NewsItem {
 
     @Column(name = "imageLink")
     private String imageLink;
-
-    public NewsItem(Item item) {
-        this.title = item.getTitle().orElse("Срочная новость!");
-        this.description = item.getDescription().orElse(null);
-        this.link = item.getLink().orElse(null);
-        this.author = item.getAuthor().orElse(null);
-        this.pubDate = item.getPubDate().orElse(null);
-    }
 }

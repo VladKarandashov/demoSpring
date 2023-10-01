@@ -31,29 +31,30 @@
         <td th:text="${url.id}"></td>
         <td th:text="${url.url}"></td>
         <td>
-            <button type="button" onclick="deleteUrl(${url.id})">Удалить</button>
+            <button type="button" th:attr="onclick=|deleteUrl('${url.id}')|">Удалить</button>
+
         </td>
     </tr>
     </tbody>
 </table>
 
 <!-- Скрипт для отправки DELETE запроса и перезагрузки страницы -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
 <script>
     function deleteUrl(urlId) {
-        $.ajax({
-            url: '/rss/urls',
-            method: 'DELETE',
-            data: {
-                id: urlId
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', '/rss/urls/'+urlId, true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    location.reload(); // Перезагрузка страницы после успешного удаления
+                } else {
+                    console.error('Ошибка при удалении ссылки:', xhr.statusText);
+                }
             }
-        }).done(function(response) {
-            if (response.status === 200) {
-                location.reload(); // Перезагрузка страницы после успешного удаления
-            }
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Ошибка при удалении ссылки:', textStatus, errorThrown);
-        });
+        };
+        xhr.send();
     }
 </script>
 <br>

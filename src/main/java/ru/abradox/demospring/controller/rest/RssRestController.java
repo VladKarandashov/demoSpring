@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.abradox.demospring.model.dto.DeleteRssLinkRequest;
 import ru.abradox.demospring.model.dto.NewsRequest;
 import ru.abradox.demospring.model.dto.RssLinkRequest;
 import ru.abradox.demospring.model.entity.NewsItem;
@@ -34,9 +34,8 @@ public class RssRestController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/urls")
-    public ResponseEntity<Void> deleteRssLink(@RequestBody DeleteRssLinkRequest request) {
-        var id = request.getId();
+    @DeleteMapping("/urls/{id}")
+    public ResponseEntity<Void> deleteRssLink(@PathVariable("id") Long id) {
         if (rssUrlRepository.existsById(id)) rssUrlRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
