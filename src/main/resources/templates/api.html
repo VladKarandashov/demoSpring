@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        textarea {
+            width: 500px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>API моего сайта</h1>
+
+<p>
+    Моя платформа предоставляет несколько открытых api, <br>
+    которые может использовать каждый желающий
+</p>
+<hr>
+<br>
+<h2>Предлагаю вам попробовать их прямо на данной странице</h2>
+<br>
+<h3>GET /film</h3>
+<p>
+    Возвращает все фильмы из БД в виде json
+</p>
+<button onclick="sendGetRequest()">Попробовать</button><br>
+<textarea id="result1" readonly></textarea>
+<br>
+<hr>
+<br>
+<h3>GET /film/{id}</h3>
+<p>
+    Возвращает фильм по его id
+</p>
+<label for="id">Id: </label><input type="number" id="id" name="id" minlength="1" maxlength="3"><br>
+<button onclick="sendGetRequest2()">Попробовать</button><br>
+<textarea id="result2" readonly></textarea>
+<br>
+<hr>
+<br>
+
+
+<script>
+    function sendGetRequest() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/film', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('result1').value = JSON.stringify(response, null, 4);
+            }
+        };
+        xhr.send();
+    }
+
+    function sendGetRequest2() {
+        var xhr = new XMLHttpRequest();
+        var id = document.getElementById("id").value
+        if (id === '') {
+            alert("Id не может быть пустым")
+            return;
+        }
+        xhr.open('GET', '/film/'+id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('result2').value = JSON.stringify(response, null, 4);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</body>
+</html>
