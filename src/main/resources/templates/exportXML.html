@@ -60,6 +60,10 @@
 <!--end of Navigation bar-->
 <button onclick="exportFilm()">Выгрузка файла БД</button>
 <br>
+<br>
+<label for="searchInput">Поиск</label>
+<input type="text" id="searchInput" placeholder="">
+<br>
 <hr>
 <table id="myTable" DIR=LTR BORDER>
     <thead>
@@ -195,5 +199,39 @@
     function isNumeric(str) {
         return !isNaN(parseFloat(str)) && isFinite(str);
     }
+</script>
+<script>
+    // Получаем ссылки на элементы DOM
+    const searchInput = document.getElementById('searchInput');
+    const table = document.querySelector('table');
+    const rows = table.getElementsByTagName('tr');
+
+    // Добавляем обработчик события для ввода в текстовое поле
+    searchInput.addEventListener('keyup', function () {
+        const searchText = searchInput.value.toLowerCase();
+
+        // Проходимся по каждой строке таблицы, кроме заголовка
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let shouldHide = true;
+
+            // Проверяем содержимое каждой ячейки на соответствие фразе поиска
+            for (let j = 0; j < cells.length; j++) {
+                const cellText = cells[j].innerText.toLowerCase();
+
+                if (cellText.includes(searchText)) {
+                    shouldHide = false;
+                    break;
+                }
+            }
+
+            // Скрываем или отображаем строку в зависимости от результата поиска
+            if (shouldHide) {
+                rows[i].style.display = 'none';
+            } else {
+                rows[i].style.display = '';
+            }
+        }
+    });
 </script>
 </html>

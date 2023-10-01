@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>RSS лента</h1>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: 'https://api.rss2json.com/v1/api.json',
+            method: 'GET',
+            dataType: 'json',
+            data: {
+                rss_url: 'http://government.ru/news/rss/'
+            }
+        }).done(function(response) {
+            var items = response.items;
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var title = item.title;
+                var description = item.description;
+                var link = item.link;
+                var pubDate = item.pubDate;
+
+                var html = '<h2>' + title + '</h2>';
+                html += '<p>' + description + '</p>';
+                html += '<p><a href="' + link + '">Подробнее</a></p>';
+                html += '<p>Дата публикации: ' + pubDate + '</p>';
+
+                $('#rssFeed').append(html);
+            }
+        }).fail(function() {
+            console.log('Не удалось загрузить RSS ленту');
+        });
+    });
+</script>
+
+<div id="rssFeed"></div>
+
+<br>
+Базу данных выполнил Карандашов Владислав в рамках лабораторной работы
+</body>
+</html>
