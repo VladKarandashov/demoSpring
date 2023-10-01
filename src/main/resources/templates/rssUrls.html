@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>Добавленные RSS ленты</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>URL</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="url : ${urls}">
+        <td th:text="${url.id}"></td>
+        <td th:text="${url.url}"></td>
+        <td>
+            <button type="button" onclick="deleteUrl(${url.id})">Удалить</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Скрипт для отправки DELETE запроса и перезагрузки страницы -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function deleteUrl(urlId) {
+        $.ajax({
+            url: '/rss/urls',
+            method: 'DELETE',
+            data: {
+                id: urlId
+            }
+        }).done(function(response) {
+            if (response.status === 200) {
+                location.reload(); // Перезагрузка страницы после успешного удаления
+            }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Ошибка при удалении ссылки:', textStatus, errorThrown);
+        });
+    }
+</script>
+<br>
+<hr>
+<br>
+<h1>Добавить новую rss ленту</h1>
+
+<form>
+    <label for="url">Ссылка на rss-ленту: </label>
+    <input type="text" id="url" name="url" minlength="1" maxlength="243" required><br>
+</form>
+
+<button onclick="createRssLenta()">Добавить</button>
+
+<script>
+    function createRssLenta() {
+        var url = document.getElementById("url").value;
+
+        if (url === '') {
+            alert("Ссылка не может быть пустой")
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/rss/urls", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    window.location.href = '/rss';
+                } else {
+                    alert("При создании rss-ленты возникла ошибка");
+                }
+            }
+        };
+
+        var data = JSON.stringify({
+            url: url
+        });
+        xhr.send(data);
+    }
+</script>
+
+</body>
+</html>

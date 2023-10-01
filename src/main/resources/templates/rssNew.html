@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>Добавить новость</h1>
+
+<form>
+    <label for="title">Заголовок: </label>
+    <input type="text" id="title" name="title" minlength="1" maxlength="40" required><br>
+    <label for="description">Описание: </label>
+    <textarea id="description" name="description" minlength="1" maxlength="254" required></textarea><br>
+    <label for="link">Ссылка на источник: </label>
+    <input type="text" id="link" name="link" minlength="1" maxlength="254" required><br>
+    <label for="author">Автор новости: </label>
+    <input type="text" id="author" name="author" minlength="1" maxlength="40" required><br>
+    <label for="imageLink">Ссылка на изображение: </label>
+    <input type="text" id="imageLink" name="imageLink" minlength="1" maxlength="254" required><br>
+</form>
+
+<button onclick="createNews()">Добавить</button>
+
+<script>
+    function createNews() {
+        var title = document.getElementById("title").value;
+        var description = document.getElementById("description").value;
+        var link = document.getElementById("link").value;
+        var author = document.getElementById("author").value;
+        var imageLink = document.getElementById("imageLink").value;
+
+        if (title === '') {
+            alert("Заголовок не может быть пустым")
+            return;
+        }
+        if (description === '') {
+            alert("Описание не может быть пустым")
+            return;
+        }
+        if (link === '') {
+            alert("Источник не может быть пустым")
+            return;
+        }
+        if (author === '') {
+            alert("Автор не может быть пустым")
+            return;
+        }
+        if (imageLink === '') {
+            alert("Картинка не может быть пустой")
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/rss/new", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    window.location.href = '/rss';
+                } else {
+                    alert("При создании новости возникла ошибка");
+                }
+            }
+        };
+
+        var data = JSON.stringify({
+            title: title,
+            description: description,
+            link: link,
+            author: author,
+            imageLink: imageLink
+        });
+        xhr.send(data);
+    }
+</script>
+
+</body>
+</html>
