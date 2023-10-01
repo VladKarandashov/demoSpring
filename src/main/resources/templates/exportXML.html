@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Экспорт БД</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #DFF0E2;
+        }
+        button {
+            width: 200px;
+            height: 30px;
+            border: none;
+            font-size: 16px;
+            background-color: #2cf5f5;
+            color: black;
+        }
+        .button-table button {
+            width: 200px;
+            height: 60px;
+            border: none;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+            background-color: #2cf5f5;
+            color: black;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        th {
+            cursor: pointer;
+        }
+        th::after {
+            content: "∨";
+            margin-left: 5px;
+            opacity: 0;
+        }
+        th.asc::after {
+            content: "▲";
+            opacity: 1;
+        }
+        th.desc::after {
+            content: "▼";
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<button onclick="exportFilm()">Выгрузка файла БД</button>
+<br>
+<hr>
+<table id="myTable" DIR=LTR BORDER>
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)">ID</th>
+        <th onclick="sortTable(1)">Название</th>
+        <th onclick="sortTable(2)">Описание</th>
+        <th onclick="sortTable(3)">Длительность</th>
+        <th onclick="sortTable(4)">Сборы в мире</th>
+        <th onclick="sortTable(5)">Бюджет</th>
+        <th onclick="sortTable(6)">Дата выхода</th>
+        <th onclick="sortTable(7)">Страна</th>
+        <th onclick="sortTable(8)">Жанр</th>
+        <th onclick="sortTable(9)">Возрастной лимит</th>
+        <th onclick="sortTable(10)">Качество</th>
+        <th onclick="sortTable(11)">Участники</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="film : ${films}">
+        <td th:text="${film.id}"></td>
+        <td th:text="${film.title}"></td>
+        <td th:text="${film.description}"></td>
+        <td th:text="${film.duration}"></td>
+        <td th:text="${film.totalBoxOffice}"></td>
+        <td th:text="${film.budget}"></td>
+        <td th:text="${film.releaseDate}"></td>
+        <td th:text="${film.country != null} ? ${film.country.title} : '-'"></td>
+        <td th:text="${film.genre != null} ? ${film.genre.title} : '-'"></td>
+        <td th:text="${film.ageLimit != null} ? ${film.ageLimit.category} : '-'"></td>
+        <td th:text="${film.quality != null} ? ${film.quality.type} : '-'"></td>
+        <td>
+            <span th:each="person : ${film.people}" th:text="${person.fullName}+', '" th:if="${!#lists.isEmpty(film.people)}"></span>
+            <span th:if="${#lists.isEmpty(film.people)}">-</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    function exportFilm() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/film' + '/export', true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                const blob = new Blob([this.response], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const contentName = xhr.getResponseHeader('Content-Disposition');
+                const filename = contentName.substring(20);
+                console.log(contentName)
+                console.log(filename);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        };
+        xhr.send();
+    }
+</script>
+
+<script>
+    function sortTable(column) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        dir = "asc";
+
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[column];
+                y = rows[i + 1].getElementsByTagName("TD")[column];
+
+                if (dir == "asc") {
+                    if (isNumeric(x.innerHTML) && isNumeric(y.innerHTML)) {
+                        if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                } else if (dir == "desc") {
+                    if (isNumeric(x.innerHTML) && isNumeric(y.innerHTML)) {
+                        if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+
+        var ths = table.getElementsByTagName("TH");
+        for (i = 0; i < ths.length; i++) {
+            ths[i].classList.remove("asc");
+            ths[i].classList.remove("desc");
+        }
+
+        if (dir == "asc") {
+            ths[column].classList.add("asc");
+        } else if (dir == "desc") {
+            ths[column].classList.add("desc");
+        }
+    }
+
+    function isNumeric(str) {
+        return !isNaN(parseFloat(str)) && isFinite(str);
+    }
+</script>
+</html>
