@@ -3,72 +3,18 @@
 <head>
     <title>БД фильмы</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style>
-        /* Стили для центрирования и размера кнопок */
-        body {
-            text-align: center;
-            background-color: #e3f1e6;
-            font-size: 25px;
-            font-family: 'Pacifico', cursive;
-        }
-
-        form {
-            display: inline-block;
-            margin-top: 50px;
-        }
-
-        h1 {
-            display: inline-block;
-            margin-right: 20px;
-        }
-
-        table {
-            margin: 0 auto;
-        }
-
-        button {
-            width: 400px;
-            height: 60px;
-            border: none;
-            font-size: 20px;
-            font-family: 'Pacifico', cursive;
-            background-color: #2cf5f5;
-            color: black;
-        }
-
-        .button-table button {
-            width: 200px;
-            height: 60px;
-            border: none;
-            font-size: 20px;
-            font-family: 'Pacifico', cursive;
-            background-color: #2cf5f5;
-            color: black;
-        }
-    </style>
-    </style>
 </head>
 <body>
-<table class="button-table">
-    <tr>
-        <td><h1>"Фильмы"</h1></td>
-        <td>
-            <button onclick="location.href='/film/editor'">Ввод</button>
-        </td>
-        <td>
-            <button onclick="location.href='/search'">Поиск</button>
-        </td>
-        <td>
-            <button onclick="location.href='/statistic'">Статистика</button>
-        </td>
-        <td>
-            <button onclick="location.href='/help'">Помощь</button>
-        </td>
-        <td>
-            <button onclick="location.href='/export'">Выгрузка файла БД</button>
-        </td>
-    </tr>
-</table>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
 
 <p>
     Данная БД была создана для хранения/редактирования информации о фильмах, <br>
@@ -76,32 +22,6 @@
     Использовалась информация, представленная в открытом в виде, на сайте КиноПоиск
 </p>
 
-<h3>Дополнительные функции:</h3>
-
-<table>
-    <tr>
-        <td>
-            <button onclick="location.href='/error'">Показать ошибку 404</button>
-        </td>
-        <td>
-            <button onclick="location.href='/country/editor'">Редактор стран</button>
-        </td>
-        <td>
-            <button onclick="location.href='/genre/editor'">Редактор жанров</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <button onclick="location.href='/quality/editor'">Редактор качества</button>
-        </td>
-        <td>
-            <button onclick="location.href='/age_limit/editor'">Редактор возрастных лимитов</button>
-        </td>
-        <td>
-            <button onclick="location.href='/person/editor'">Редактор персон</button>
-        </td>
-    </tr>
-</table>
 <br>
 Базу данных выполнил Карандашов Владислав в рамках лабораторной работы
 </body>

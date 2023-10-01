@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>БД фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        /* Стили для центрирования и размера кнопок */
+        body {
+            text-align: center;
+            background-color: #e3f1e6;
+            font-size: 25px;
+            font-family: 'Pacifico', cursive;
+        }
+
+        form {
+            display: inline-block;
+            margin-top: 50px;
+        }
+
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        table {
+            margin: 0 auto;
+        }
+
+        button {
+            width: 400px;
+            height: 60px;
+            border: none;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+            background-color: #2cf5f5;
+            color: black;
+        }
+
+        .button-table button {
+            width: 200px;
+            height: 60px;
+            border: none;
+            font-size: 20px;
+            font-family: 'Pacifico', cursive;
+            background-color: #2cf5f5;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<h1>БАЗА ДАННЫХ "ФИЛЬМЫ"</h1>
+<table class="button-table">
+    <tr>
+        <td>
+            <button onclick="location.href='/film/editor'">Редактор</button>
+        </td>
+        <td>
+            <button onclick="location.href='/'">Главная</button>
+        </td>
+    </tr>
+</table>
+
+<h3>Редакторы дополнительных полей:</h3>
+
+<table>
+    <tr>
+        <td>
+            <button onclick="location.href='/country/editor'">Редактор стран</button>
+        </td>
+        <td>
+            <button onclick="location.href='/genre/editor'">Редактор жанров</button>
+        </td>
+        <td>
+            <button onclick="location.href='/person/editor'">Редактор персон</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="location.href='/quality/editor'">Редактор качества</button>
+        </td>
+        <td>
+            <button onclick="location.href='/age_limit/editor'">Редактор возрастных лимитов</button>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

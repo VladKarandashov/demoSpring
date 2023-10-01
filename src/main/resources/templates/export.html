@@ -32,31 +32,17 @@
     </style>
 </head>
 <body>
-<table class="button-table">
-    <tr>
-        <td><h1>"Фильмы"</h1></td>
-        <td>
-            <button onclick="location.href='/film/editor'">Ввод</button>
-        </td>
-        <td>
-            <button onclick="location.href='/search'">Поиск</button>
-        </td>
-        <td>
-            <button onclick="location.href='/statistic'">Статистика</button>
-        </td>
-        <td>
-            <button onclick="location.href='/help'">Помощь</button>
-        </td>
-        <td>
-            <button onclick="location.href='/export'">Выгрузка файла БД</button>
-        </td>
-        <td>
-            <button onclick="location.href='/'">В главное меню</button>
-        </td>
-    </tr>
-</table>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
 <button onclick="exportFilm()">Выгрузка файла БД</button>
-<button onclick="location.href='/'">В главное меню</button>
 <table DIR=LTR BORDER>
     <thead>
     <tr>

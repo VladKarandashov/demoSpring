@@ -29,6 +29,16 @@
     </style>
 </head>
 <body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
 <h1>Редактор стран</h1>
 
 <form th:action="@{/country/editor}" method="get">
@@ -63,8 +73,6 @@
         <button type="submit">Удалить</button>
     </form>
 </div>
-<hr>
-<button onclick="location.href='/'">В главное меню</button>
 </body>
 
 <script>

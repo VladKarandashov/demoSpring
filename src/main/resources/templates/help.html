@@ -20,7 +20,16 @@
     </style>
 </head>
 <body>
-
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
 <h1>Помощь по базе данных "Фильмы"</h1>
 <hr>
 
@@ -37,9 +46,6 @@
     Работу выполнил студент группы ИВТ-Б20 - Карандашов Владислав
 </p>
 
-<hr>
-<br>
-<button onclick="location.href='/'">В главное меню</button>
 <hr>
 <br>
 <script>
