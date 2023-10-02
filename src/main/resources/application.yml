@@ -8,9 +8,9 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://81.200.145.234:3306/Cinema
-    username: user
-    password: qwerty123
+    url: jdbc:mysql://5.42.220.205:3306/default_db
+    username: gen_user
+    password: \vBB!,]]*98sc)
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     check-template-location: false
