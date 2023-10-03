@@ -8,6 +8,10 @@
             width: 500px;
             height: 200px;
         }
+        table.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +55,69 @@
 <br>
 <hr>
 <br>
-
+<h3>GET /film/search?genre={1}&country={2}&ageLimit={3}</h3>
+<p>
+    API для поиска фильма по жанру и/или стране и/или возрастному ограничению. <br>
+    Все критерии передаются через query params. <br>
+    Если нам не важен какой-то из критериев - его нужно просто не передавать. <br>
+    <br>
+    Этот функционал можно протестировать ниже. <br>
+    Обратите внимание, что функционал "связанного" поиска не может быть здесь реализован, <br>
+    так как вызывающая сторона может посылать любые параметры и сервер не в силах этому помешать. <br>
+    API может вернуть пустой список!
+</p>
+<table class="center" id="myTable">
+    <thead>
+    <tr>
+        <th>Категория</th>
+        <th>Поле выбора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><label for="genre">Выберите жанр:</label></td>
+        <td>
+            <select id="genre" name="genre" onchange="">
+                <option th:value="0">Любой</option>
+                <option th:each="genre : ${items.genreList}"
+                        th:value="${genre.id}"
+                        th:text="${genre.id}+'. '+${genre.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="country">Выберите страну:</label></td>
+        <td>
+            <select id="country" name="country" onchange="">
+                <option th:value="0">Любая</option>
+                <option th:each="country : ${items.countryList}"
+                        th:value="${country.id}"
+                        th:text="${country.id}+'. '+${country.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="age_limit">Выберите возраст:</label></td>
+        <td>
+            <select id="age_limit" name="age_limit" onchange="">
+                <option th:value="0">Любой</option>
+                <option th:each="age_limit : ${items.ageLimitList}"
+                        th:value="${age_limit.id}"
+                        th:text="${age_limit.id}+'. '+${age_limit.category}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<button onclick="sendGetRequest3()">Попробовать</button><br>
+<label id="countRecords">Апи не вызывалась</label><br>
+<textarea id="result3" readonly></textarea>
+<br>
+<hr>
+<br>
 
 <script>
     function sendGetRequest() {
@@ -78,6 +144,30 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 document.getElementById('result2').value = JSON.stringify(response, null, 4);
+            }
+        };
+        xhr.send();
+    }
+
+    function sendGetRequest3() {
+        var xhr = new XMLHttpRequest();
+
+        var genreId = document.getElementById("genre").value
+        var countryId = document.getElementById("country").value
+        var ageLimitId = document.getElementById("age_limit").value
+
+        var path = '/film/search?'
+        if (genreId !== "0") path += "genre="+genreId+"&";
+        if (countryId !== "0") path += "country="+countryId+"&";
+        if (ageLimitId !== "0") path += "ageLimit="+ageLimitId;
+        console.log(path)
+
+        xhr.open('GET', path, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('result3').value = JSON.stringify(response, null, 4);
+                document.getElementById("countRecords").innerHTML = "Получено "+response.length+" фильмов"
             }
         };
         xhr.send();
