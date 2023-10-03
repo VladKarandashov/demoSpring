@@ -49,18 +49,6 @@
             alert("Описание не может быть пустым")
             return;
         }
-        if (link === '') {
-            alert("Источник не может быть пустым")
-            return;
-        }
-        if (author === '') {
-            alert("Автор не может быть пустым")
-            return;
-        }
-        if (imageLink === '') {
-            alert("Картинка не может быть пустой")
-            return;
-        }
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/rss/new", true);
